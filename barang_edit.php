@@ -53,7 +53,7 @@ if (isset($_POST['update'])) {
                 <div class="form-group">
                     <label>Jenis Barang</label>
                     <select name="level" class="form-control" >
-                        <option value="">-pilih-</option>
+                        <option value="">-pilih-</option>p
                         <?php foreach($level->result() as $key => $data) {?>
                             <option value="<?=$data->level?>" <?=$data->level == $row->level ? "selected" : null?>><?=$data->name?></option>
                         <?php }?>   
