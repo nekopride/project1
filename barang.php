@@ -2,7 +2,7 @@
 include 'config.php';
 $view = $connect->query("SELECT * FROM barang");
 ?>
-<!DOCTYPE html>
+<!DOCTYPE html>ttyu
 <html>
     <head>
         <title>barang yang ada di gudang </title>
