@@ -32,7 +32,7 @@ $view = $connect->query("SELECT * FROM barang");
                 <td><?= $row['harga'] ?></td>
                 <td><?= $row['stock'] ?></td>
                 <td><?= $row['tanggal_masuk'] ?></td>
-                <td><?= $row['level'] ?></td>
+                <td><?= $row['level1'] ?></td>
                 <td>
                     <a href="barang_edit.php?id=<?= $row['id_barang']?>">Edit</a> | 
                     <a href="barang_hapus.php?id=<?= $row['id_barang']?>">Hapus</a>
@@ -42,9 +42,11 @@ $view = $connect->query("SELECT * FROM barang");
 
             ?>
 
-
+            
 
         </table>
+        
+        <a href="index.php" class="btn btn-primary">keluar</a>
     </div>
     </body>
 </html>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'config.php';
 
 if (isset($_GET['id'])){
@@ -15,10 +15,9 @@ if (isset($_POST['update'])) {
     $nama = $_POST['nama'];
     $harga = $_POST['harga'];
     $stock = $_POST['stock'];
-    $tanggal_masuk = $_POST['tanggal_masuk'];
-    $level = $_POST['level'];
+    $level = $_POST['level1'];
 
-    mysqli_query($connect, "UPDATE barang SET nama='$nama', harga='$harga', stock='$stock', tanggal_masuk ='$tanggal_masuk', level='$level' where id_barang = '$id' ");
+    mysqli_query($connect, "UPDATE barang SET nama='$nama', harga='$harga', stock='$stock', level1='$level' where id_barang = '$id' ");
 
     header("location:barang.php");
 }
@@ -27,13 +26,13 @@ if (isset($_POST['update'])) {
 <!DOCTYPE html>
 <html>
     <head>
-        <title>perbaruhi Barang</title>
+        <title>Edit Barang</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     </head>
     <body>
         <div class="container">
-            <h1>Tambah barang</h1>
-            <form method="post">
+            <h1>Edit Barang</h1>
+            <form method="POST">
                 <div class="form-group">
                     <label>Nama Barang</label>
                     <input type="text" name="nama" class="form-control" placeholder=" Nama Barang" value="<?= $data['nama']?>">
@@ -47,20 +46,16 @@ if (isset($_POST['update'])) {
                     <input type="number" name="stock" class="form-control" placeholder=" stock barang " value="<?= $data['stock']?>">
                 </div>
                 <div class="form-group">
-                    <label>Tanggal Masuk Barang </label>
-                    <input type="date" name="tanggal_masuk" class="form-control" placeholder=" Tanggal Masuk Barang  " value="<?= $data['tanggal_masuk']?>">
-                </div>
-                <div class="form-group">
-                    <label>Jenis Barang</label>
-                    <select name="level" class="form-control" >
-                        <option value="">-pilih-</option>
-                        <?php foreach($level->result() as $key => $data) {?>
-                            <option value="<?=$data->level?>" <?=$data->level == $row->level ? "selected" : null?>><?=$data->name?></option>
-                        <?php }?>   
+                <label for="level1">Kategori:</label>
+                    <select name="level1">
+                        <option value="elektronik" <?php if ($data['level1'] == 'elektronik') echo 'selected'; ?>>elektronik</option>
+                        <option value="makanan" <?php if ($data['level1'] == 'makanan') echo 'selected'; ?>>makanan</option>
+                        <option value="minuman" <?php if ($data['level1'] == 'minuman') echo 'selected'; ?>>minuman</option>
+                        <option value="pakaian" <?php if ($data['level1'] == 'pakaian') echo 'selected'; ?>>pakaian</option>
                     </select>
-                    </div>
-            <input type="submit" name="update" value="perbaruhi" class="btn btn-primary">
-            <a href="barang.php" class="btn btn-warning">Kembali</a>
+                </div>
+            <input type="submit" name="update" value="Update" class="btn btn-primary">
+            <a href="barang.php" class="btn btn-warning">Cancel</a>
             </form>
         </div>
     </body>

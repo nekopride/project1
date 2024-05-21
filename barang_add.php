@@ -7,8 +7,8 @@ if (isset($_POST['simpan'])) {
     $nama = $_POST['nama'];
     $harga = $_POST['harga'];
     $stock = $_POST['stock'];
-    $tanggal_masuk = $_POST['tanggal_masuk'];
-    $level_barang = $_POST['level'];
+    $tanggal_masuk = date('Y-m-d H:i:s');
+    $level_barang = $_POST['level1'];
 
     mysqli_query($connect, "INSERT INTO barang VALUES ('$id_barang', '$nama', '$harga', '$stock', '$tanggal_masuk', '$level_barang')");
 
@@ -43,12 +43,8 @@ if (isset($_POST['simpan'])) {
                     <input type="number" name="stock" class="form-control" placeholder=" stock barang ">
                 </div>
                 <div class="form-group">
-                    <label>Tanggal Masuk Barang </label>
-                    <input type="date" name="tanggal_masuk" class="form-control" placeholder=" Tanggal Masuk Barang  ">
-                </div>
-                <div class="form-group">
                     <label >Jenis Barang:</label>
-                    <select name="level" class="form-control" required>
+                    <select name="level1" class="form-control" required>
                     <option value=""> - pilih jenis barang -</option>
                     <option value="pakaian">pakaian</option>
                     <option value="makanan">makanan</option>
