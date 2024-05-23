@@ -1,5 +1,6 @@
 <?php
 include 'config.php';
+session_start();
 
 if (isset($_POST['simpan'])) {
 
@@ -11,6 +12,8 @@ if (isset($_POST['simpan'])) {
     $level_barang = $_POST['level1'];
 
     mysqli_query($connect, "INSERT INTO barang VALUES ('$id_barang', '$nama', '$harga', '$stock', '$tanggal_masuk', '$level_barang')");
+
+    $_SESSION['success'] = 'Berhasil menambahkan data';
 
     header("location:barang.php");
 }

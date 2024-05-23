@@ -1,68 +1,59 @@
 <?php
-include("config.php");
+include 'config.php';
 session_start();
+print_r($_SESSION);
 
-$level = $dbconnect->query("SELECT u.*,r.nama as nama_role FROM user as u INNER JOIN role as r ON u.role_id=r.id_role");
+$role = mysqli_query($connect,"SELECT * FROM role");
 
-if(isset($_SESSION['userid'])){
-    if($_SESSION['role_id']==2){
-        header('location:gudang.php');
-    }
-}else{
-    $_SESSION['error'] = 'anda harus login terlebih dahulu';
-    header('location:login.php');
+if (isset($_POST['simpan'])){
+     $nama = $_POST['nama'];
+     $username = $_POST['username'];
+     $password = $_POST['password'];
+     $role_id = $_POST['role_id'];
+
+     mysqli_query($connect, "INSERT INTO user VALUES ('','$nama','$username','$password','$role_id')");
+
+     $_SESSION['success'] = 'berhasil menambahkan data';
+
+     header("location: user.php");
 }
-?>
 
 ?>
-
-
 <!DOCTYPE html>
 <html>
-<head>
-     <title> tambah role </title>
-     <link rel="stylesheet" href="https://maxcdn.boostrapcdn.com/booststrap/3.3.7/css/bootstrap.min.css"
-     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-</head>
-<body>
-   <div class="container">
-       <?php if (isset($_SESSION["success"])&& $_SESSION['success']!=''){?>
-     <div class ="alert alert.success" role="alert">
-          <?$_SESSION['success']?>
-     </div> 
-     <?php
-     }
-     $_SESSION['success']='';
-     ?> 
-     <h1>list user</h1>
-     <a href="/user_add.php" class="btn btn-primasry">tambahdata</a>
-     <table class="table table-bordered">
-          <tr>
-               <th>ID user</th>
-               <th>Nama</th>
-               <th>Usertname</th>
-               <th>Password</th>
-               <th>level Akses</th>
-               <th>Aksi</th>
-          </tr>
-          <?php
-          while ($row = $viwe->fetch_array()) { ?> 
-          <tr>
-               <td> <?= $row['id_user'] ?></td>
-               <td> <?= $row['nama'] ?></td>
-               <td> <?= $row['username'] ?></td>
-               <td> <?= $row['password'] ?></td>
-               <td> <?= $row['nama_role'] ?></td>
-               <td> 
-                    <a href="user_edit.php?id=<?= $row['id_user']?>">Edit</a>
-                    <a href="user_hapus.php?id=<?= $row['id_user']?>"onclick="retrun confrim('apakah anda yakin?')">Hapus</a>
-               </td>
-          </tr>
-          <?php 
-          }?>
-     </table>
-    </div>
-</body>
+     <head>
+          <title> Tambah Data</title>
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+       
+     </head>
+     <body>
+          <div class="container">
+               <h1> Tambah User</h1>
+               <form method="post">
+                    <div class="form-group">
+                         <label>Nama User</label>
+                         <input type="text" name="nama" class="form-control" placeholder="Nama User">
+                    </div>
+                    <div class="form-group">
+                         <label>Username</label>
+                         <input type="text" name="username" class="form-control" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                         <label>Password</label>
+                         <input type="text" name="password" class="form-control" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                         <label>Role Akses</label>
+                         <select class="form-control" name="role_id">
+                              <option value="">Pilih Role Akses</option>
+                         <?php while($row = mysqli_fetch_array($role)){?>
+                              <option value="<?= $row['id_role'] ?>"><?= $row['nama'] ?></option>
+                         <?php }?>
+                         </select>
+                    </div>
+                    <input type="submit" name="simpan" value="Simpan" class="btn btn-primary">
+                    <a href="user.php" class="btn btn-warning">Kembali</a>
+               </form>
+          </div>
+     </body>
 </html>
-
-

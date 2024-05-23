@@ -2,7 +2,7 @@
 include 'config.php';
 session_start();
 
-$view = $dbconnecet->query("SELECT * FROM role"); 
+$view = $connecet->query("SELECT * FROM role"); 
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +15,7 @@ $view = $dbconnecet->query("SELECT * FROM role");
 <body>
    <div class="container">
     <?php if (isset($_SESSION["success"]) && $_SESSION["success"] == ''){?>
-        <div class="alert alert-success" level="alert">
+        <div class="alert alert-success" role="alert">
             <?=$_SESSION['success']?>
         </div>
     <?php 

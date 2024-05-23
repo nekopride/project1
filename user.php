@@ -2,10 +2,10 @@
 include("config.php");
 session_start();
 
-$view = $dbconnect->query("SELECT u.*,r.nama as nama_level FROM user as u INNER JOIN level as l ON u.leve_id=l.id_level");
+$view = $connect->query("SELECT u.*,r.nama as nama_role FROM user as u INNER JOIN role as r ON u.role_id=r.id_role");
 
 if(isset($_SESSION['userid'])){
-    if($_SESSION['level_id']==2){
+    if($_SESSION['role_id']==2){
         header('location:gudang.php');
     }
 }else{
@@ -14,20 +14,18 @@ if(isset($_SESSION['userid'])){
 }
 ?>
 
-?>
-
 
 <!DOCTYPE html>
 <html>
 <head>
-     <title> tambah role </title>
-     <link rel="stylesheet" href="https://maxcdn.boostrapcdn.com/booststrap/3.3.7/css/bootstrap.min.css"
-     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+     <title> list user </title>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+       
 </head>
 <body>
    <div class="container">
        <?php if (isset($_SESSION["success"])&& $_SESSION['success']!=''){?>
-     <div class ="alert alert.success" level="alert">
+     <div class ="alert alert.success" role="alert">
           <?$_SESSION['success']?>
      </div> 
      <?php
@@ -35,34 +33,34 @@ if(isset($_SESSION['userid'])){
      $_SESSION['success']='';
      ?> 
      <h1>list user</h1>
-     <a href="/user_add.php" class="btn btn-primasry">tambahdata</a>
+     <a href="user_add.php" class="btn btn-primary">Tambah Data</a>
      <table class="table table-bordered">
           <tr>
                <th>ID user</th>
                <th>Nama</th>
                <th>Usertname</th>
                <th>Password</th>
-               <th>level Akses</th>
+               <th>role Akses</th>
                <th>Aksi</th>
           </tr>
           <?php
-          while ($row = $viwe->fetch_array()) { ?> 
+          while ($row = $view->fetch_array()) { ?> 
           <tr>
                <td> <?= $row['id_user'] ?></td>
                <td> <?= $row['nama'] ?></td>
                <td> <?= $row['username'] ?></td>
                <td> <?= $row['password'] ?></td>
-               <td> <?= $row['nama_level'] ?></td>
+               <td> <?= $row['nama_role'] ?></td>
                <td> 
-                    <a href="user_edit.php?id=<?= $row['id_user']?>">Edit</a>
+                    <a href="user_edit.php?id=<?= $row['id_user']?>">Edit</a> |
                     <a href="user_hapus.php?id=<?= $row['id_user']?>"onclick="retrun confrim('apakah anda yakin?')">Hapus</a>
                </td>
           </tr>
           <?php 
           }?>
      </table>
+     <a href="index.php" class="btn btn-primary">keluar</a>
     </div>
 </body>
 </html>
-
 

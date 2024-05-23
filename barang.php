@@ -1,5 +1,6 @@
 <?php
 include 'config.php';
+session_start();
 $view = $connect->query("SELECT * FROM barang");
 ?>
 <!DOCTYPE html>
@@ -11,6 +12,14 @@ $view = $connect->query("SELECT * FROM barang");
     </head>
     <body>
     <div class="container">
+        <?php if(isset($_SESSION['success']) && $_SESSION['success'] !='') {?>
+          <div class="alert alert-success" role="alert">
+                <?=$_SESSION['success']?>
+         </div>
+         <?php 
+            }
+            $_SESSION['success'] = '';
+         ?>
         <h1>List Barang</h1>
         <a href="barang_add.php" class="btn btn-primary">Tambah Data</a>
         <table class="table table-bordered">
@@ -50,5 +59,4 @@ $view = $connect->query("SELECT * FROM barang");
     </div>
     </body>
 </html>
-
 
