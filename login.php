@@ -4,15 +4,15 @@ session_start();
 
 print_r($_SESSION);
 
-if(isset($post['Masuk']))
+if(isset($_POST['Masuk']))
 
 {
-     $username = $_post['username'];
-     $password = $_post['password'];
+     $username = $_POST['username'];
+     $password = $_POST['password'];
 
-     $query = mysqli_query($dbconnect, "SELECT * FROM WHERE username='$username' and password=$'$password' ");
+     $query = mysqli_query($connect, "SELECT * FROM user WHERE username='$username' and password='$password'");
 
-     $datadata = mysqli_fetch_assoc($query);
+     $data = mysqli_fetch_assoc($query);
 
      $check = mysqli_num_rows($query);
 
@@ -21,7 +21,7 @@ if(isset($post['Masuk']))
      }
      else
      {
-          $_SESSION['userid'] = $data['id_user'];
+          $_SESSION['username'] = $data['id_user'];
           $_SESSION['nama'] = $data['$nama'];
           $_SESSION['role_id'] = $data['role_id'];
           $_SESSION['auth'] = 'YES';
@@ -42,12 +42,12 @@ if(isset($post['Masuk']))
 <body>
      <div class="container">
        <?php if (isset($_SESSION["error"])&& $_SESSION['error']!=''){?>
-     <div class ="alert alert.danger" role="alert">
-          <?$_SESSION['error']?>
-     </div> 
+          <div class ="alert alert.danger" role="alert">
+               <?$_SESSION['error']?>
+          </div> 
      <?php
        }
-       $_SESSION['error'] = ';'
+       $_SESSION['error'] = '';
        ?>
 
        <h1>login</h1>
