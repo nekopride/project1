@@ -22,37 +22,15 @@ if (isset($_POST['simpan'])){
 </head>
 <body>
     <div class="container">
-        <h1>List Barang</h1>
-        <a href="barang_add.php" class="btn btn-primary">Tambah Data</a>
-        <table class="table table-bordered">
-            <tr>
-                <th>ID barang</th>
-                <th>Nama</th>
-                <th>Harga</th>
-                <th>Stock</th>
-                <th>tanggal masuk</th>
-                <th>Jenis barang</th>
-                <th>Aksi</th>
-            </tr>
-            <?php
-            while ($row = $view->fetch_array()) { ?>
-
-            <tr>
-                <td><?= $row['id_barang'] ?></td>
-                <td><?= $row['nama'] ?></td>
-                <td><?= $row['harga'] ?></td>
-                <td><?= $row['stock'] ?></td>
-                <td><?= $row['tanggal_masuk'] ?></td>
-                <td><?= $row['role'] ?></td>
-                <td>
-                    <a href="barang_edit.php?id=<?= $row['id_barang']?>">Edit</a> | 
-                    <a href="barang_hapus.php?id=<?= $row['id_barang']?>">Hapus</a>
-                </td>
-            </tr>
-            <?php }
-
-            ?>
-        </table>
+        <h1>Tambah role</h1>
+        <form method="post">
+            <div class="form-group">
+                <label>name role</label>
+                <input type="text" name="nama" class="form-control" placeholder="nama role">
+            </div>
+        <input type="sumbit" name="simpan" value="simpan" class="btn btn-primary">
+        <a href="/role.php" class="btn btn-warning">kembali</a>
+        </form>
     </div>
     </body>
 </html>
