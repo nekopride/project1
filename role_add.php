@@ -5,7 +5,7 @@ session_start();
 if (isset($_POST['simpan'])){
      $nama = $_POST['nama'];
 
-     mysqli_query($dbconnect,"INSERT INTO role values('','$nama')");
+     mysqli_query($connect,"INSERT INTO role values('','$nama')");
 
      $_SESSION['success'] = 'berhasil menambahkan data';
 
