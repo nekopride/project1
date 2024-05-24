@@ -119,5 +119,3 @@ if (isset($_POST['masuk'])) {
     </div>
 </body>
 </html>
-```
-</rewritten_file><|eot_id|>
