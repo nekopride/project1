@@ -15,7 +15,7 @@ $view = $connecet->query("SELECT * FROM role");
 <body>
    <div class="container">
     <?php if (isset($_SESSION["success"]) && $_SESSION["success"] == ''){?>
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-success" role ="alert">
             <?=$_SESSION['success']?>
         </div>
     <?php 

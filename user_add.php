@@ -1,7 +1,6 @@
 <?php
 include 'config.php';
 session_start();
-print_r($_SESSION);
 
 $role = mysqli_query($connect,"SELECT * FROM role");
 
@@ -11,7 +10,7 @@ if (isset($_POST['simpan'])){
      $password = $_POST['password'];
      $role_id = $_POST['role_id'];
 
-     mysqli_query($connect, "INSERT INTO user VALUES ('','$nama','$username','$password','$role_id')");
+     mysqli_query($connect, "INSERT INTO user VALUES ('','$nama','$password','$username','$role_id')");
 
      $_SESSION['success'] = 'berhasil menambahkan data';
 
@@ -51,7 +50,7 @@ if (isset($_POST['simpan'])){
                          <?php }?>
                          </select>
                     </div>
-                    <input type="submit" name="simpan" value="Simpan" class="btn btn-primary">
+                    <input type="submit" name="simpan" value="simpan" class="btn btn-primary">
                     <a href="user.php" class="btn btn-warning">Kembali</a>
                </form>
           </div>

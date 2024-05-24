@@ -28,7 +28,7 @@ if (isset($_POST['simpan'])){
                 <label>name role</label>
                 <input type="text" name="nama" class="form-control" placeholder="nama role">
             </div>
-        <input type="sumbit" name="simpan" value="simpan" class="btn btn-primary">
+        <input type="submit" name="simpan" value="simpan" class="btn btn-primary">
         <a href="/role.php" class="btn btn-warning">kembali</a>
         </form>
     </div>

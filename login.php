@@ -2,7 +2,6 @@
 include 'config.php';
 session_start();
 
-print_r($_SESSION);
 
 if (isset($_POST['masuk'])) {
     if (isset($_POST['username']) && isset($_POST['password'])) {

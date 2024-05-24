@@ -38,7 +38,7 @@ if(isset($_SESSION['userid'])){
           <tr>
                <th>ID user</th>
                <th>Nama</th>
-               <th>Usertname</th>
+               <th>Username</th>
                <th>Password</th>
                <th>role Akses</th>
                <th>Aksi</th>

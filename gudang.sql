@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 23 Bulan Mei 2024 pada 15.11
+-- Waktu pembuatan: 24 Bulan Mei 2024 pada 10.12
 -- Versi server: 10.1.32-MariaDB
 -- Versi PHP: 7.2.5
 
@@ -42,7 +42,6 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id_barang`, `nama`, `harga`, `stock`, `tanggal_masuk`, `level1`) VALUES
-(1234, 'magicom', 300000, 100, '2024-05-23', 'elektronik'),
 (17777, 'toppaw', 15000, 100, '2024-05-20', 'makanan'),
 (111111, 'kipas angin ', 300000, 80, '2023-05-01', 'elektronik');
 
@@ -105,8 +104,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `nama`, `password`, `username`, `role_id`) VALUES
-(1, 'ilham', '123456', 'ilham', 1),
-(2, 'ali', '123123', 'ali', 2);
+(22, 'cristoper', '123123', 'cristoper', 2),
+(23, 'ilham', '111111', 'ilham', 1),
+(25, 'ali', '123123', 'ali', 2);
 
 --
 -- Indexes for dumped tables
@@ -136,9 +136,7 @@ ALTER TABLE `role`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id_user`),
-  ADD UNIQUE KEY `role_id` (`role_id`),
-  ADD UNIQUE KEY `role_id_2` (`role_id`),
-  ADD KEY `id_level` (`role_id`);
+  ADD KEY `role_id` (`role_id`);
 
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
@@ -148,7 +146,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
