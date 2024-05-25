@@ -2,12 +2,12 @@
 include 'config.php';
 session_start();
 
-$role = mysqli_query($dbconnect, "SELECT * FROM role");
+$role = mysqli_query($connect, "SELECT * FROM role");
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 //menampilkan data berdasarkan ID
-    $data = mysqli_query($dbconnect, "SELECT * FROM user where id_user='$id'");
+    $data = mysqli_query($connect, "SELECT * FROM user where id_user='$id'");
     $data = mysqli_fetch_assoc($data);
 }
 
@@ -18,7 +18,7 @@ if (isset($_POST['update']))
     $username = $_POST['username']; $password = $_POST['password'];
     $role_id = $_POST['role_id'];
 // Menyimpan ke database:
-    mysqli_query($dbconnect, "UPDATE user SET nama='$nama', username='$username', password='$password', role_id=$role_id where id_user='$id' ");
+    mysqli_query($connect, "UPDATE user SET nama='$nama', username='$username', password='$password', role_id=$role_id where id_user='$id' ");
     $_SESSION['success'] = 'Berhasil memperbaruhi data';
 // mengalihkan halaman ke list barang
 header("location:barang.php");
