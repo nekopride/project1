@@ -1,28 +1,34 @@
 <?php
-include '../config.php';
+include 'config.php';
 session_start();
-print_r($_SESSION);
 
 if (!$connect) {
-    die("Koneksi gagal: " . mysqli_connect_error());
+  die("Koneksi gagal: " . mysqli_connect_error());
 }
 
 $role = mysqli_query($connect, "SELECT * FROM role");
 
-if (isset($_POST['simpan'])){
-     $nama = $_POST['nama'];
-     $username = $_POST['username'];
-     $password = $_POST['password'];
-     $role_id = $_POST['role_id'];
+if (isset($_POST['simpan'])) {
+  $nama = $_POST['nama'];
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+  $role_id = $_POST['id_role']; // Assuming this is the correct column name
 
-     mysqli_query($connect, "INSERT INTO user VALUES ('','$nama','$username','$password','$role_id')");
+  $query = "INSERT INTO user (nama, username, password,role_id) VALUES ('$nama','$username','$password','$role_id')";
+  $result = mysqli_query($connect, $query);
 
-     $_SESSION['success'] = 'berhasil menambahkan data';
+  if ($result) {
+    $_SESSION['success'] = 'Berhasil menambahkan data';
+  } else {
+    echo "Error: " . mysqli_error($connect); // Display error message for debugging
+  }
 
-     header("location: ../user.php");
+  header("location:user.php");
 }
 
 ?>
+
+
 <!DOCTYPE html>
 <html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
   <head>
@@ -38,7 +44,7 @@ if (isset($_POST['simpan'])){
       src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
       defer
     ></script>
-    <script src="../assets/js/init-alpine.js"></script>
+    <script src="assets/js/init-alpine.js"></script>
   </head>
   <body>
     <div class="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
@@ -50,13 +56,13 @@ if (isset($_POST['simpan'])){
             <img
               aria-hidden="true"
               class="object-cover w-full h-full dark:hidden"
-              src="../assets/img/falih.jpg"
+              src="assets/img/falih.jpg"
               alt="Office"
             />
             <img
               aria-hidden="true"
               class="hidden object-cover w-full h-full dark:block"
-              src="../assets/img/hoo.jpg"
+              src="assets/img/hoo.jpg"
               alt="Office"
             />
           </div>
@@ -105,13 +111,13 @@ if (isset($_POST['simpan'])){
               <div class="flex justify-between mt-4">
                 <a
                   class="block w-1/2 px-6 py-2 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red mr-2"
-                  href="../index.php"
+                  href="index.php"
                 >
                   Kembali
                 </a>
                 <a
                   class="block w-1/2 px-5 py-2 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple ml-2"
-                  href="../user.php"
+                  href="user.php"
                 >
                   Create account
                 </a>
@@ -123,4 +129,3 @@ if (isset($_POST['simpan'])){
     </div>
   </body>
 </html>
-
