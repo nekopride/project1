@@ -76,7 +76,7 @@ if(isset($_SESSION['userid'])){
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                         ></path>
                     </svg>
-                    <span class="ml-4">Dashboard</span>
+                    <span class="ml-4">Home</span>
                 </a>
             </li>
             <li class="relative px-6 py-3">
@@ -276,7 +276,7 @@ if(isset($_SESSION['userid'])){
                             d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0v6m0 0H7m6 0h6"
                         ></path>
                     </svg>
-                    <span class="ml-4">Dashboard</span>
+                    <span class="ml-4">Home</span>
                 </a>
             </li>
             <li class="relative px-6 py-3">
@@ -609,14 +609,14 @@ if(isset($_SESSION['userid'])){
                                    <tbody class="text-gray-600 text-sm font-light dark:text-gray-300">
                                         <?php
                                         while ($row = $view->fetch_array()) { ?>
-                                        <tr class="border-b border-gray-200 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-600">
+                                          <tr class="border-b border-gray-200 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-600 table-row-hover">
                                              <td class="py-3 px-6 text-left"><?= $row['id_user'] ?></td>
                                              <td class="py-3 px-6 text-left"><?= $row['nama'] ?></td>
                                              <td class="py-3 px-6 text-left"><?= $row['username'] ?></td>
                                              <td class="py-3 px-6 text-left"><?= $row['password'] ?></td>
                                              <td class="py-3 px-6 text-left"><?= $row['nama_role'] ?></td>
                                              <td class="py-3 px-6 text-left">
-                                                  <a href="user_edit.php?id=<?= $row['id_user'] ?>" style="color: #5145cd;" class="hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">Edit</a> |
+                                                  <a href="pages/user_edit.php?id=<?= $row['id_user'] ?>" style="color: #5145cd;" class="hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">Edit</a> |
                                                   <a href="user_delete.php?id=<?= $row['id_user'] ?>" style="color: #e02424;" class="hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Hapus</a>
                                              </td>
                                         </tr>
