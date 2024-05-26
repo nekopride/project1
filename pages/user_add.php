@@ -1,6 +1,10 @@
 <?php
 include '../config.php';
 session_start();
+if (!isset ($_SESSION["auth"])){
+	header ("Location:login.php");
+	exit;
+}
 
 if (!$connect) {
     die("Koneksi gagal: " . mysqli_connect_error());

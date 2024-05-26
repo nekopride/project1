@@ -1,5 +1,9 @@
 <?php
 include 'config.php';
+if (!isset ($_SESSION["auth"])){
+	header ("Location:pages/login.php");
+	exit;
+}
 
 if (isset($_GET['id'])){
     $id =$_GET['id'];

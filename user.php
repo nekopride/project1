@@ -1,12 +1,16 @@
 <?php
 include("config.php");
 session_start();
+if (!isset ($_SESSION["auth"])){
+	header ("Location:pages/login.php");
+	exit;
+}
 
 $view = $connect->query("SELECT u.*,r.nama as nama_role FROM user as u INNER JOIN role as r ON u.role_id=r.id_role");
 
 if(isset($_SESSION['userid'])){
     if($_SESSION['role_id']==2){
-        header('location:gudang.php');
+        header('location:barang.php');
     }
 }else{
     $_SESSION['error'] = 'anda harus login terlebih dahulu';
@@ -77,6 +81,28 @@ if(isset($_SESSION['userid'])){
                         ></path>
                     </svg>
                     <span class="ml-4">Home</span>
+                </a>
+            </li>
+            <li class="relative px-6 py-3">
+                <a
+                    class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 <?php echo basename($_SERVER['PHP_SELF']) == 'forms.php' ? 'text-purple-600' : ''; ?>"
+                    href="forms.php"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                        ></path>
+                    </svg>
+                    <span class="ml-4">Forms</span>
                 </a>
             </li>
         </ul>

@@ -1,7 +1,10 @@
 <?php
 include 'config.php';
 session_start();
-
+if (!isset ($_SESSION["auth"])){
+	header ("Location:pages/login.php");
+	exit;
+}
 if (isset($_POST['simpan'])) {
 
     $id_barang = $_POST['id_barang'];
