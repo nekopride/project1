@@ -1,7 +1,6 @@
 <?php
 include '../config.php';
 session_start();
-print_r($_SESSION);
 
 if (!$connect) {
     die("Koneksi gagal: " . mysqli_connect_error());
@@ -15,13 +14,13 @@ if (isset($_POST['simpan'])){
      $password = $_POST['password'];
      $role_id = $_POST['role_id'];
 
-     mysqli_query($connect, "INSERT INTO user VALUES ('','$nama','$username','$password','$role_id')");
+     $query = "INSERT INTO user (nama, username, password, role_id) VALUES ('$nama', '$username', '$password', '$role_id')";
+     mysqli_query($connect, $query);
 
-     $_SESSION['success'] = 'berhasil menambahkan data';
-
+     $_SESSION['success'] = 'Berhasil menambahkan data';
      header("location: ../user.php");
+     exit();
 }
-
 ?>
 <!DOCTYPE html>
 <html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
@@ -62,60 +61,66 @@ if (isset($_POST['simpan'])){
           </div>
           <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
             <div class="w-full">
-              <h1
-                class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200"
-              >
-                Create account
-              </h1>
-              <label class="block text-sm">
-                <span class="text-gray-700 dark:text-gray-400">
-                  Nama user
-                </span>
-                <input
-                  class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                  placeholder="Nama user"
-                />
-              </label>
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">
-                  Username
-                </span>
-                <input
-                  class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                  placeholder="Username"
-                />
-              </label>
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Password</span>
-                <input
-                  class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                  placeholder="Password"
-                />
-              </label>
-              <label class="block mt-4 text-sm">
-                <span class="text-gray-700 dark:text-gray-400">Role Akses</span>
-                <select class="block w-full mt-1 text-sm form-select border-gray-300 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:focus:shadow-outline-gray py-2" name="role_id">
-                  <option value="">Pilih Role Akses</option>
-                  <?php while($row = mysqli_fetch_array($role)){ ?>
-                    <option value="<?= $row['id_role'] ?>"><?= $row['nama'] ?></option>
-                  <?php } ?>
-                </select>
-              </label>
-
-              <div class="flex justify-between mt-4">
-                <a
-                  class="block w-1/2 px-6 py-2 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red mr-2"
-                  href="../index.php"
-                >
-                  Kembali
-                </a>
-                <a
-                  class="block w-1/2 px-5 py-2 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple ml-2"
-                  href="../user.php"
+              <form method="post">
+                <h1
+                  class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200"
                 >
                   Create account
-                </a>
-              </div>
+                </h1>
+                <label class="block text-sm">
+                  <span class="text-gray-700 dark:text-gray-400">
+                    Nama user
+                  </span>
+                  <input
+                    name="nama"
+                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                    placeholder="Nama user"
+                  />
+                </label>
+                <label class="block mt-4 text-sm">
+                  <span class="text-gray-700 dark:text-gray-400">
+                    Username
+                  </span>
+                  <input
+                    name="username"
+                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                    placeholder="Username"
+                  />
+                </label>
+                <label class="block mt-4 text-sm">
+                  <span class="text-gray-700 dark:text-gray-400">Password</span>
+                  <input
+                    name="password"
+                    type="password"
+                    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                    placeholder="Password"
+                  />
+                </label>
+                <label class="block mt-4 text-sm">
+                  <span class="text-gray-700 dark:text-gray-400">Role Akses</span>
+                  <select
+                    name="role_id"
+                    class="block w-full mt-1 text-sm form-select border-gray-300 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:focus:shadow-outline-gray py-2"
+                  >
+                    <option value="">Pilih Role Akses</option>
+                    <?php while($row = mysqli_fetch_array($role)){ ?>
+                      <option value="<?= $row['id_role'] ?>"><?= $row['nama'] ?></option>
+                    <?php } ?>
+                  </select>
+                </label>
+
+                <div class="flex justify-between mt-4">
+                  <a
+                    class="block w-1/2 px-6 py-2 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red mr-2"
+                    href="../index.php"
+                  >
+                    Kembali
+                  </a>
+                  <button type="submit" name="simpan" class="block w-1/2 px-5 py-2 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple ml-2">
+                    menambah
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -123,4 +128,6 @@ if (isset($_POST['simpan'])){
     </div>
   </body>
 </html>
+```
+</rewritten_file><|eot_id|>
 

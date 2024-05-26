@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (isset ($_SESSION["masuk"])){
+	header ("Location:index.php");
+	exit;
+}
 if (isset($_SESSION["auth"]) && $_SESSION["auth"] === 'YES') {
     header('Location: ../index.php');
     exit();
