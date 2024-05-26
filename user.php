@@ -617,7 +617,7 @@ if(isset($_SESSION['userid'])){
                                              <td class="py-3 px-6 text-left"><?= $row['nama_role'] ?></td>
                                              <td class="py-3 px-6 text-left">
                                                   <a href="pages/user_edit.php?id=<?= $row['id_user'] ?>" style="color: #5145cd;" class="hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">Edit</a> |
-                                                  <a href="user_delete.php?id=<?= $row['id_user'] ?>" style="color: #e02424;" class="hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Hapus</a>
+                                                  <a href="user_hapus.php?id=<?= $row['id_user'] ?>" style="color: #e02424;" class="hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Hapus</a>
                                              </td>
                                         </tr>
                                         <?php
