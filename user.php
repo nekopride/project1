@@ -10,7 +10,7 @@ $view = $connect->query("SELECT u.*,r.nama as nama_role FROM user as u INNER JOI
 
 if(isset($_SESSION['userid'])){
     if($_SESSION['role_id']==2){
-        header('location:barang.php');
+        header('location:index.php');
     }
 }else{
     $_SESSION['error'] = 'anda harus login terlebih dahulu';
