@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 24 Bulan Mei 2024 pada 10.12
+-- Waktu pembuatan: 27 Bulan Mei 2024 pada 09.13
 -- Versi server: 10.1.32-MariaDB
 -- Versi PHP: 7.2.5
 
@@ -30,41 +30,63 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `barang` (
   `id_barang` int(11) NOT NULL,
-  `nama` varchar(100) NOT NULL,
-  `harga` int(12) NOT NULL,
-  `stock` int(100) NOT NULL,
-  `tanggal_masuk` date NOT NULL,
-  `level1` varchar(20) NOT NULL
+  `nama_barang` varchar(255) DEFAULT NULL,
+  `stock` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `barang`
 --
 
-INSERT INTO `barang` (`id_barang`, `nama`, `harga`, `stock`, `tanggal_masuk`, `level1`) VALUES
-(17777, 'toppaw', 15000, 100, '2024-05-20', 'makanan'),
-(111111, 'kipas angin ', 300000, 80, '2023-05-01', 'elektronik');
+INSERT INTO `barang` (`id_barang`, `nama_barang`, `stock`) VALUES
+(1, 'kipas angin ', -2000),
+(2, 'karpet bulu domba', 100),
+(3, 'oli', 11),
+(4, 'pohon', 24);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `level_barang`
+-- Struktur dari tabel `barang_keluar`
 --
 
-CREATE TABLE `level_barang` (
-  `level1` varchar(50) NOT NULL,
-  `id_level` int(2) NOT NULL
+CREATE TABLE `barang_keluar` (
+  `id_keluar` int(11) NOT NULL,
+  `id_barang` int(11) DEFAULT NULL,
+  `jumlah_keluar` int(11) DEFAULT NULL,
+  `tanggal_keluar` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `level_barang`
+-- Dumping data untuk tabel `barang_keluar`
 --
 
-INSERT INTO `level_barang` (`level1`, `id_level`) VALUES
-('elektronik', 4),
-('makanan ', 1),
-('minuman ', 2),
-('pakaian', 3);
+INSERT INTO `barang_keluar` (`id_keluar`, `id_barang`, `jumlah_keluar`, `tanggal_keluar`) VALUES
+(1, 1, 10, '2024-05-28'),
+(2, 1, 1000, '2024-05-28'),
+(3, 1, 1000, '2024-05-28'),
+(4, 2, 1000, '2024-05-13');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `barang_masuk`
+--
+
+CREATE TABLE `barang_masuk` (
+  `id_masuk` int(11) NOT NULL,
+  `id_barang` int(11) DEFAULT NULL,
+  `jumlah_masuk` int(11) DEFAULT NULL,
+  `tanggal_masuk` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `barang_masuk`
+--
+
+INSERT INTO `barang_masuk` (`id_masuk`, `id_barang`, `jumlah_masuk`, `tanggal_masuk`) VALUES
+(1, 2, 1000, '2024-05-27'),
+(2, 4, 2, '2024-05-27');
 
 -- --------------------------------------------------------
 
@@ -106,7 +128,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id_user`, `nama`, `password`, `username`, `role_id`) VALUES
 (22, 'cristoper', '123123', 'cristoper', 2),
 (23, 'ilham', '111111', 'ilham', 1),
-(25, 'ali', '123123', 'ali', 2);
+(26, 'cristoper', '123123', 'neko', 2),
+(27, 'wafiq', '123', 'neko', 2);
 
 --
 -- Indexes for dumped tables
@@ -116,14 +139,21 @@ INSERT INTO `user` (`id_user`, `nama`, `password`, `username`, `role_id`) VALUES
 -- Indeks untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  ADD PRIMARY KEY (`id_barang`),
-  ADD KEY `level` (`level1`);
+  ADD PRIMARY KEY (`id_barang`);
 
 --
--- Indeks untuk tabel `level_barang`
+-- Indeks untuk tabel `barang_keluar`
 --
-ALTER TABLE `level_barang`
-  ADD PRIMARY KEY (`level1`);
+ALTER TABLE `barang_keluar`
+  ADD PRIMARY KEY (`id_keluar`),
+  ADD KEY `id_barang` (`id_barang`);
+
+--
+-- Indeks untuk tabel `barang_masuk`
+--
+ALTER TABLE `barang_masuk`
+  ADD PRIMARY KEY (`id_masuk`),
+  ADD KEY `id_barang` (`id_barang`);
 
 --
 -- Indeks untuk tabel `role`
@@ -143,20 +173,44 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT untuk tabel `barang`
+--
+ALTER TABLE `barang`
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT untuk tabel `barang_keluar`
+--
+ALTER TABLE `barang_keluar`
+  MODIFY `id_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT untuk tabel `barang_masuk`
+--
+ALTER TABLE `barang_masuk`
+  MODIFY `id_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
 
 --
--- Ketidakleluasaan untuk tabel `barang`
+-- Ketidakleluasaan untuk tabel `barang_keluar`
 --
-ALTER TABLE `barang`
-  ADD CONSTRAINT `barang_ibfk_1` FOREIGN KEY (`level1`) REFERENCES `level_barang` (`level1`);
+ALTER TABLE `barang_keluar`
+  ADD CONSTRAINT `barang_keluar_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`);
+
+--
+-- Ketidakleluasaan untuk tabel `barang_masuk`
+--
+ALTER TABLE `barang_masuk`
+  ADD CONSTRAINT `barang_masuk_ibfk_1` FOREIGN KEY (`id_barang`) REFERENCES `barang` (`id_barang`);
 
 --
 -- Ketidakleluasaan untuk tabel `user`
