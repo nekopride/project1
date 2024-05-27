@@ -2,10 +2,6 @@
 include 'config.php';
 session_start();
 print_r($_SESSION);
-if (!isset ($_SESSION["auth"])){
-	header ("Location:pages/login.php");
-	exit;
-}
 $sql_users = "SELECT COUNT(*) as total_users FROM user"; // Query untuk menghitung jumlah pengguna
 $result_users = $connect->query($sql_users);
 
@@ -26,9 +22,6 @@ if ($result_items->num_rows > 0) {
         $total_items = $row_items["total_items"];
     }
 }
-$sql_barang = "SELECT * FROM barang";
-$result_barang  = $connect->query($sql_barang);
-
 
 // Menutup koneksi
 $connect->close();
@@ -84,7 +77,7 @@ $connect->close();
               ></span>
               <a
                 class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                href="index.html"
+                href="index.php"
               >
                 <svg
                   class="w-5 h-5"
@@ -197,7 +190,7 @@ $connect->close();
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="barang.php"
+                href="tables.html"
               >
                 <svg
                   class="w-5 h-5"
@@ -211,7 +204,7 @@ $connect->close();
                 >
                   <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
                 </svg>
-                <span class="ml-4">Barang</span>
+                <span class="ml-4">Tables</span>
               </a>
             </li>
           <div class="px-6 my-5">
@@ -266,7 +259,7 @@ $connect->close();
               ></span>
               <a
                 class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                href="index.html"
+                href="index.php"
               >
                 <svg
                   class="w-5 h-5"
@@ -639,31 +632,24 @@ $connect->close();
             <!-- New Table -->
             <div class="w-full overflow-hidden rounded-lg shadow-xs">
               <div class="w-full overflow-x-auto">
-              <table class="min-w-full w-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                                   <thead>
-                                        <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal dark:bg-gray-700 dark:text-gray-400">
-                                        <th class="py-3 px-6 text-left">ID barang</th>
-                                        <th class="py-3 px-6 text-left">Nama</th>
-                                        <th class="py-3 px-6 text-left">Harga</th>
-                                        <th class="py-3 px-6 text-left">stock</th>
-                                        <th class="py-3 px-6 text-left">Jenis barang</th>
-                                        </tr>
-                                   </thead>
-                                   <tbody class="text-gray-600 text-sm font-light dark:text-gray-300">
-                                        <?php
-                                        while ($row = $result_barang->fetch_array()) { ?>
-                                          <tr class="border-b border-gray-200 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-600 table-row-hover">
-                                             <td class="py-3 px-6 text-left"><?= $row['id_barang'] ?></td>
-                                             <td class="py-3 px-6 text-left"><?= $row['nama'] ?></td>
-                                             <td class="py-3 px-6 text-left"><?= $row['harga'] ?></td>
-                                             <td class="py-3 px-6 text-left"><?= $row['stock'] ?></td>
-                                             <td class="py-3 px-6 text-left"><?= $row['level1'] ?></td>
-                                            
-                                        </tr>
-                                        <?php
-                                        } ?>
-                                   </tbody>
-                              </table>
+                <table class="w-full whitespace-no-wrap">
+                  <thead>
+                    <tr
+                      class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800"
+                    >
+                      <th class="px-4 py-3">Barang</th>
+                      <th class="px-4 py-3">Amount</th>
+                      <th class="px-4 py-3">Status</th>
+                      <th class="px-4 py-3">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"
+                  >
+                    <tr class="text-gray-700 dark:text-gray-400">
+                      <td class="px-4 py-3">
+                        <div class="flex items-center text-sm">
+                <!-- Pagination -->
                 <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
                   <nav aria-label="Table navigation">
                     <ul class="inline-flex items-center">
