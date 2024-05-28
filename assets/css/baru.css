@@ -1,0 +1,19 @@
+/* Untuk tema terang */
+.alert-light {
+    background-color: #fdf6b2; /* Warna kuning terang */
+    color: #333; /* Warna teks gelap untuk kontras yang baik pada latar belakang terang */
+}
+
+/* Untuk tema gelap */
+.alert-dark {
+    background-color: #bfa12f; /* Warna kuning gelap */
+    color: #fff; /* Warna teks putih untuk kontras yang baik pada latar belakang gelap */
+}
+  .bg-active {
+    background-color: #6a0dad;
+    color: white;
+  }
+  .bg-inactive {
+    background-color: #d7d7d7; /* Warna untuk tema terang */
+    color: #333;
+  }
