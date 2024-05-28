@@ -429,6 +429,7 @@ if(isset($_SESSION['userid'])){
                   type="text"
                   placeholder="Cari barang"
                   aria-label="Search"
+                  id="cariBarang"
                 />
               </div>
             </div>
@@ -536,20 +537,21 @@ if(isset($_SESSION['userid'])){
                               <table class="min-w-full w-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                                    <thead>
                                         <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal dark:bg-gray-700 dark:text-gray-400">
-                                        <th class="py-3 px-6 text-left">ID User</th>
-                                        <th class="py-3 px-6 text-left">Nama</th>
-                                        <th class="py-3 px-6 text-left">Username</th>
-                                        <th class="py-3 px-6 text-left">Password</th>
-                                        <th class="py-3 px-6 text-left">Role Akses</th>
-                                        <th class="py-3 px-6 text-left">Aksi</th>
+                                          <th class="py-3 px-6 text-left">ID User</th>
+                                          <th class="py-3 px-6 text-left">Nama</th>
+                                          <th class="py-3 px-6 text-left">Username</th>
+                                          <th class="py-3 px-6 text-left">Password</th>
+                                          <th class="py-3 px-6 text-left">Role Akses</th>
+                                          <th class="py-3 px-6 text-left">Aksi</th>
                                         </tr>
                                    </thead>
                                    <tbody class="text-gray-600 text-sm font-light dark:text-gray-300">
                                         <?php
                                         while ($row = $view->fetch_array()) { ?>
-                                          <tr class="border-b border-gray-200 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-600 table-row-hover">
+                                        <!-- <div class="user-row"> -->
+                                          <tr class="border-b border-gray-200 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-600 table-row-hover user-row">
                                              <td class="py-3 px-6 text-left"><?= $row['id_user'] ?></td>
-                                             <td class="py-3 px-6 text-left"><?= $row['nama'] ?></td>
+                                             <td class="py-3 px-6 text-left user-name"><?= $row['nama'] ?></td>
                                              <td class="py-3 px-6 text-left"><?= $row['username'] ?></td>
                                              <td class="py-3 px-6 text-left"><?= $row['password'] ?></td>
                                              <td class="py-3 px-6 text-left"><?= $row['nama_role'] ?></td>
@@ -557,7 +559,8 @@ if(isset($_SESSION['userid'])){
                                                   <a href="pages/user_edit.php?id=<?= $row['id_user'] ?>" style="color: #5145cd;" class="hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">Edit</a> |
                                                   <a href="user_hapus.php?id=<?= $row['id_user'] ?>" style="color: #e02424;" class="hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Hapus</a>
                                              </td>
-                                        </tr>
+                                          </tr>
+                                        <!-- </div> -->
                                         <?php
                                         } ?>
                                    </tbody>
@@ -567,5 +570,20 @@ if(isset($_SESSION['userid'])){
                </div>
           </div>
      </div>
+     <script>
+        document.getElementById("cariBarang").addEventListener('input', function(){
+          const cariBarang = this.value.toLowerCase();
+          const resultUser = document.getElementsByClassName("user-row");
+          const userName = document.getElementsByClassName("user-name");
+          for (i=0; i < userName.length; i++){
+            const userCheck = userName[i].textContent;
+            if (userCheck.includes(cariBarang)){
+              resultUser[i].classList.remove('hidden');
+            } else{
+              resultUser[i].classList.add('hidden');
+            }
+          }
+        })
+     </script>
   </body>
 </html>
