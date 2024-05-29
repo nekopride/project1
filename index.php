@@ -28,7 +28,25 @@ if ($result_items->num_rows > 0) {
 $sql_barang = "SELECT * FROM barang";
 $result_barang  = $connect->query($sql_barang);
 
+// Query untuk mengambil data barang masuk per bulan
+$sql_barang_masuk = "SELECT MONTH(tanggal_masuk) as bulan, SUM(jumlah_masuk) as total FROM barang_masuk GROUP BY MONTH(tanggal_masuk)";
+$result_barang_masuk = $connect->query($sql_barang_masuk);
 
+
+$barang_masuk = [];
+while($row = $result_barang_masuk->fetch_assoc()) {
+    $barang_masuk[$row['bulan']] = $row['total'];
+}
+
+// Query untuk mengambil data barang keluar per bulan
+$sql_barang_keluar = "SELECT MONTH(tanggal_keluar) as bulan, SUM(jumlah_keluar) as total FROM barang_keluar GROUP BY MONTH(tanggal_keluar)";
+$result_barang_keluar = $connect->query($sql_barang_keluar);
+
+
+$barang_keluar = [];
+while($row = $result_barang_keluar->fetch_assoc()) {
+    $barang_keluar[$row['bulan']] = $row['total'];
+}
 // Menutup koneksi
 $connect->close();
 ?>
@@ -604,6 +622,39 @@ $connect->close();
                 </div>
               </div>
             </div>
+            <canvas id="myChart" width="400" height="200"></canvas>
+            <script>
+            document.addEventListener("DOMContentLoaded", function() {
+              var ctx = document.getElementById('myChart').getContext('2d');
+              var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+                    datasets: [{
+                      label: 'Barang Masuk',
+                      data: [<?php echo implode(',', $barang_masuk); ?>],
+                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                      borderColor: 'rgba(54, 162, 235, 1)',
+                      borderWidth: 1
+                  }, {
+                      label: 'Barang Keluar',
+                      data: [<?php echo implode(',', $barang_keluar); ?>],
+                      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                      borderColor: 'rgba(255, 99, 132, 1)',
+                      borderWidth: 1
+                  }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            stepSize: 100
+                        }
+                      }
+                    }
+                  });
+                });
+            </script>
                 </div>
               </div>
             </div>
