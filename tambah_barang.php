@@ -229,7 +229,7 @@ while ($row = $result_barang->fetch_assoc()) {
         <div class="py-4 text-gray-500 dark:text-gray-400">
           <a
             class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200"
-            href="#"
+            href=""
           >
             Gudang
           </a>
@@ -388,6 +388,7 @@ while ($row = $result_barang->fetch_assoc()) {
                   type="text"
                   placeholder="Cari barang"
                   aria-label="Search"
+                  id="cariBarang"
                 />
               </div>
             </div>
@@ -518,19 +519,19 @@ while ($row = $result_barang->fetch_assoc()) {
             <tbody class="bg-gray-900 divide-y divide-gray-700">
               <?php
               $result_barang->data_seek(0); // Query ulang untuk reset pointer
-              if ($result_barang->num_rows > 0) {
+              if ($result_barang->num_rows > 0) { 
                 while ($row = $result_barang->fetch_assoc()) {
-                    echo "<tr>
+                    echo "<tr class='border-b border-gray-200 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-600 table-row-hover barang-row'>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['id_barang'] . "</td>
-                            <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['nama_barang'] . "</td>
+                            <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200 user-barang' >" . $row['nama_barang'] . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['stock'] . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
-                            <a href='barang_hapus.php?id=" . $row["id_barang"] . "' style='background-color: #c81e1e;' class='text-white px-3 py-1 rounded hover:bg-red-700'>Hapus</a>
+                              <a href='barang_hapus.php?id=" . $row["id_barang"] . "' style='background-color: #c81e1e;' class='text-white px-3 py-1 rounded hover:bg-red-700'>Hapus</a>
                             </td>
-                          </tr>";
+                    </tr>";
 
                 }
-            } else {
+              } else {
                 echo "<tr><td colspan='4' class='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>Tidak ada data barang</td></tr>";
             }
             ?>
@@ -551,5 +552,20 @@ while ($row = $result_barang->fetch_assoc()) {
       </div>
     </main>
   </div>
+  <script>
+        document.getElementById("cariBarang").addEventListener('input', function(){
+          const cariBarang = this.value.toLowerCase();
+          const resultBarang = document.getElementsByClassName("barang-row");
+          const userBarang = document.getElementsByClassName("user-barang");
+          for (i=0; i < userBarang.length; i++){
+            const userCheck = userBarang[i].textContent;
+            if (userCheck.includes(cariBarang)){
+              resultBarang[i].classList.remove('hidden');
+            } else{
+              resultBarang[i].classList.add('hidden');
+            }
+          }
+        })
+     </script>
 </body>
 </html>
