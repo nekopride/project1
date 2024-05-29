@@ -500,11 +500,17 @@ $result_masuk = mysqli_query($connect, $query_masuk);
 
         <?php } ?>
         <form action="barang_masuk.php" method="post" class="mt-5">
-            <div class="mb-4">
-                <label for="nama_barang" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Barang:</label>
-                <input type="text" name="nama_barang" id="nama_barang" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" required>
-            </div>
-            <div class="mb-4">
+        <div class="mb-4">
+  <label for="nama_barang" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Barang:</label>
+  <div class="relative mt-1 flex">
+    <select name="id_barang" id="id_barang" class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" required>
+      <?php while ($row = mysqli_fetch_assoc($result_barang)) { ?>
+        <option value="<?= $row['id_barang']; ?>"><?= $row['nama_barang']; ?></option>
+      <?php } ?>
+    </select>
+  </div>
+</div>        
+                 <div class="mb-4">
                 <label for="stock" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Stock:</label>
                 <input type="number" name="stock" id="stock" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" required>
             </div>

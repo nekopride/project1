@@ -54,7 +54,7 @@ $total_pages = ceil($total_keluar / $limit);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Barang Masuk</title>
+    <title>List Barang</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -493,39 +493,44 @@ $total_pages = ceil($total_keluar / $limit);
                 </li>
             </ul>
           </div>
-        </header>        
+        </header>
+        <main class="h-full pb-16 overflow-y-auto">
+          <div class="container px-6 mx-auto grid">
 
-    <div class="container">
-    <h1>Daftar Barang Keluar</h1>
+    <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200">Daftar Barang Keluar</h1>
         <?php if (isset($_SESSION['error'])) { ?>
             <div class="alert alert-danger" role="alert">
                 <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
             </div>
         <?php } ?>
-        
+
         <form action="barang_keluar.php" method="post" class="mt-5">
+        <div class="mb-4">
+                  <label for="nama_barang" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Barang:</label>
+                  <div class="relative mt-1 flex">
+                    <select name="id_barang" id="id_barang" class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" required>
+                      <?php while ($row = mysqli_fetch_assoc($result_barang)) { ?>
+                        <option value="<?= $row['id_barang']; ?>"><?= $row['nama_barang']; ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                </div>   
             <div class="mb-4">
-                <label for="nama_barang" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Barang:</label>
-                <input type="text" name="nama_barang" id="nama_barang" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" required>
-            </div>
-            <div class="mb-4">
-                <label for="stock" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Stock:</label>
-                <input type="number" name="stock" id="stock" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" required>
+                <label for="Jumlah Keluar" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Jumlah Keluar:</label>
+                <input type="number" name="jumlah_keluar" id="jumlah_keluar" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" required>
             </div>
             <input type="submit" name="simpan" value="Simpan" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" style="background-color: #6A00CC; hover: background-color: #7A00DD;">
         </form>
 
-        <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200 mt-8">List Barang</h1>
+        <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200 mt-8">Barang Keluar</h1>
         <div class="overflow-x-auto">
         <table class="min-w-full w-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
           <thead class="bg-gray-800">
-            <tr>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">ID Barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Nama Barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Jumlah Keluar</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Tanggal Keluar</th>
-            </tr>
-
+        </tr>
           </thead>
             <tbody>
                 <?php
@@ -556,5 +561,8 @@ $total_pages = ceil($total_keluar / $limit);
             </ul>
         </nav>
     </div>
+    </div>
+</main>    
+</div>
 </body>
 </html>
