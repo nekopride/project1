@@ -481,8 +481,8 @@ while ($row = $result_barang->fetch_assoc()) {
             </ul>
           </div>
         </header>
+    <main class="h-full pb-16 overflow-y-auto">
           <div class="container px-6 mx-auto grid">
-            <main class="h-full pb-16 overflow-y-auto">
             <div class="container">
         <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200">Tambah Barang</h1>
         <?php if (isset($_SESSION['notif'])) { ?>
@@ -506,7 +506,7 @@ while ($row = $result_barang->fetch_assoc()) {
         <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200 mt-8">List Barang</h1>
         <div class="overflow-x-auto">
         <table class="min-w-full w-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-        <thead class="bg-gray-800">
+          <thead class="bg-gray-800">
             <tr>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">ID Barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Nama Barang</th>
@@ -514,11 +514,11 @@ while ($row = $result_barang->fetch_assoc()) {
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Aksi</th>
             </tr>
 
-        </thead>
-        <tbody class="bg-gray-900 divide-y divide-gray-700">
-            <?php
-            $result_barang->data_seek(0); // Query ulang untuk reset pointer
-            if ($result_barang->num_rows > 0) {
+          </thead>
+            <tbody class="bg-gray-900 divide-y divide-gray-700">
+              <?php
+              $result_barang->data_seek(0); // Query ulang untuk reset pointer
+              if ($result_barang->num_rows > 0) {
                 while ($row = $result_barang->fetch_assoc()) {
                     echo "<tr>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['id_barang'] . "</td>
@@ -534,9 +534,9 @@ while ($row = $result_barang->fetch_assoc()) {
                 echo "<tr><td colspan='4' class='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>Tidak ada data barang</td></tr>";
             }
             ?>
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+      </div>
         <!-- Pagination -->
         <nav class="mt-8">
           <ul class="pagination flex">
