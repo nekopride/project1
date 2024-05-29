@@ -446,25 +446,7 @@ $connect->close();
                 class="relative w-full max-w-xl mr-6 focus-within:text-purple-500"
               >
                 <div class="absolute inset-y-0 flex items-center pl-2">
-                  <svg
-                    class="w-4 h-4"
-                    aria-hidden="true"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
                 </div>
-                <input
-                  class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
-                  type="text"
-                  placeholder="Cari barang"
-                  aria-label="Search"
-                />
               </div>
             </div>
             <ul class="flex items-center flex-shrink-0 space-x-6">
@@ -622,8 +604,15 @@ $connect->close();
                 </div>
               </div>
             </div>
-            <canvas id="myChart" width="400" height="200"></canvas>
+            <div class="bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-2">
+              <div style="width:1180px; height:575px;">
+                <!-- Canvas untuk grafik -->
+                <canvas id="myChart" width="1200" height="600"></canvas>
+              </div>
+            </div>
+
             <script>
+
             document.addEventListener("DOMContentLoaded", function() {
               var ctx = document.getElementById('myChart').getContext('2d');
               var myChart = new Chart(ctx, {
@@ -644,16 +633,23 @@ $connect->close();
                       borderWidth: 1
                   }]
                 },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            stepSize: 100
-                        }
+                      options: {
+                          scales: {
+                              y: {
+                                  beginAtZero: true,
+                                  stepSize: 100
+                              }
+                          },
+                          plugins: {
+                              legend: {
+                                  labels: {
+                                      color: 'white' // Mengubah warna tulisan legenda
+                                  }
+                              }
+                          }
                       }
-                    }
+                    });
                   });
-                });
             </script>
                 </div>
               </div>
