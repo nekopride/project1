@@ -1,0 +1,9 @@
+.custom-alert-light {
+    background-color: #f56565; /* Merah terang */
+    color: white; /* Warna teks */
+}
+
+.custom-alert-dark {
+    background-color: #c81e1e !important; /* Merah gelap */
+    color: white; /* Warna teks */
+}
