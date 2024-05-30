@@ -10,14 +10,11 @@ if (isset($_POST['simpan'])) {
     $nama_barang = $_POST['nama_barang'];
     $jenis = $_POST['jenis'];
 
-    // Validasi input stok
-    if ($stock < 0) {
-        $_SESSION['error'] = 'Stok tidak boleh negatif';
-    } else {
+
         // Menambahkan barang ke database
         mysqli_query($connect, "INSERT INTO barang VALUES ('', '$nama_barang', '0','$jenis')");
         $_SESSION['success'] = 'Berhasil menambahkan data';
-    }
+    
 }
 
 // Mengambil data barang dari database untuk tampilan tabel
