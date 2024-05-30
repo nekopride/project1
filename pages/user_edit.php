@@ -1,10 +1,6 @@
 <?php
 include '../config.php';
 session_start();
-if (!isset ($_SESSION["auth"])){
-	header ("Location:login.php");
-	exit;
-}
 
 $roleQuery = "SELECT * FROM role";
 $role = mysqli_query($connect, $roleQuery);
@@ -53,10 +49,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
 <body class="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
     <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800 border-4 border-purple-500">
         <div class="flex flex-col overflow-y-auto md:flex-row">
-            <div class="h-32 md:h-auto md:w-1/2">
-                <video aria-hidden="true" class="object-cover w-full h-full dark:hidden" autoplay loop muted src="../assets/video/fali.mp4" alt="Office"></video>
-                <video aria-hidden="true" class="hidden object-cover w-full h-full dark:block" autoplay loop muted src="../assets/video/falih.mp4" alt="Office"></video>
-            </div>
+        <div class="h-32 md:h-auto md:w-1/2">
+            <img
+              aria-hidden="true"
+              class="object-cover w-full h-full dark:hidden"
+              src="../assets/img/wafiq.jpg"
+              alt="wafiq"
+            />
+            <img
+              aria-hidden="true"
+              class="hidden object-cover w-full h-full dark:block"
+              src="../assets/img/waf.jpg"
+              alt="waf"
+            />
+          </div>
             <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
                 <div class="w-full">
                     <h1 class="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">Edit User</h1>

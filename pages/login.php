@@ -1,9 +1,5 @@
 <?php
 session_start();
-if (isset ($_SESSION["masuk"]) && $_SESSION["masuk"] === true){
-	header ("Location:../index.php");
-	exit;
-}
 if (isset($_SESSION["auth"]) && $_SESSION["auth"] === 'YES') {
     header('Location: ../index.php');
     exit();
@@ -65,14 +61,16 @@ if (isset($_POST['masuk'])) {
             <img
               aria-hidden="true"
               class="object-cover w-full h-full dark:hidden"
-              src="../assets/img/wafiq.jpg"
-              alt="Office"
+              src="../assets/img/login.png"
+              alt="gudang"
+              style="object-fit: cover;"
             />
             <img
               aria-hidden="true"
               class="hidden object-cover w-full h-full dark:block"
-              src="../assets/img/a.jpg"
-              alt="Office"
+              src="../assets/img/pergudangan.jpg"
+              alt="gudang"
+              style="object-fit: cover;"
             />
           </div>
           <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
@@ -115,6 +113,13 @@ if (isset($_POST['masuk'])) {
                 >
                   Log in
                 </button>
+                <hr class="my-8" />
+                <!-- Customer Service -->
+                <div class="text-center">
+                  <p class="text-gray-700 dark:text-gray-200">Customer Service:</p>
+                  <p class="text-gray-700 dark:text-gray-400">Email: <a href="mailto:e32232276@student.polije.ac.id" class="text-purple-600 hover:text-purple-800 dark:hover:text-purple-400">e32232276@student.polije.ac.id</a></p>
+                  <p class="text-gray-700 dark:text-gray-400">WhatsApp: <a href="https://wa.me/6289685091993" class="text-purple-600 hover:text-purple-800 dark:hover:text-purple-400">+62 896-8509-1993</a></p>
+                </div>
               </form>
             </div>
           </div>
