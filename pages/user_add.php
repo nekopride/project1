@@ -25,6 +25,14 @@ if (isset($_POST['simpan'])){
      header("location: ../user.php");
      exit();
 }
+if(isset($_SESSION['userid'])){
+  if($_SESSION['role_id']==2){
+      header('location:../index.php');
+  }
+}else{
+  $_SESSION['error'] = 'anda harus login terlebih dahulu';
+  header('location:login.php');
+}
 ?>
 <!DOCTYPE html>
 <html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">

@@ -1,6 +1,10 @@
 <?php
 include 'config.php';
 session_start();
+if (!isset ($_SESSION["auth"])){
+	header ("Location:pages/login.php");
+	exit;
+}
 
 $error_message = '';
 

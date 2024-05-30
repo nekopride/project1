@@ -1,19 +1,21 @@
 <?php
 include 'config.php'; // Pastikan file ini mengandung informasi koneksi ke database
 session_start();
+if (!isset ($_SESSION["auth"])){
+	header ("Location:pages/login.php");
+	exit;
+}
 // Proses input barang baru
-
-
 if (isset($_POST['simpan'])) {
     $nama_barang = $_POST['nama_barang'];
-    $stock = $_POST['stock'];
+    $jenis = $_POST['jenis'];
 
     // Validasi input stok
     if ($stock < 0) {
         $_SESSION['error'] = 'Stok tidak boleh negatif';
     } else {
         // Menambahkan barang ke database
-        mysqli_query($connect, "INSERT INTO barang VALUES ('', '$nama_barang', '$stock')");
+        mysqli_query($connect, "INSERT INTO barang VALUES ('', '$nama_barang', '0','$jenis')");
         $_SESSION['success'] = 'Berhasil menambahkan data';
     }
 }
@@ -504,10 +506,11 @@ while ($row = $result_barang->fetch_assoc()) {
                 <input type="text" name="nama_barang" id="nama_barang" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" placeholder="nama barang" required>
             </div>
             <div class="mb-4">
-                <label for="stock" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Stock:</label>
-                <input type="number" name="stock" id="stock" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" placeholder="jumlah stock" required>
+                <label for="jenis" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Jenis:</label>
+                <input type="text" name="jenis" id="jenis" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" placeholder="jenis barang" required>
             </div>
             <input type="submit" name="simpan" value="Simpan" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" style="background-color: #6A00CC; hover: background-color: #7A00DD;">
+
 
         </form>
 
@@ -519,6 +522,7 @@ while ($row = $result_barang->fetch_assoc()) {
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">ID Barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Nama Barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Stock</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Jenis Barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Aksi</th>
             </tr>
 
@@ -532,6 +536,7 @@ while ($row = $result_barang->fetch_assoc()) {
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['id_barang'] . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['nama_barang'] . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['stock'] . "</td>
+                            <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['jenis'] . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                             <a href='barang_hapus.php?id=" . $row["id_barang"] . "' style='background-color: #c81e1e;' class='text-white px-3 py-1 rounded hover:bg-red-700'>Hapus</a>
                             </td>
