@@ -198,7 +198,7 @@ $connect->close();
                 <span class="ml-4">Barang Keluar</span>
               </a>
             </li>
-           
+          <?php if ($_SESSION['role_id'] == '1') : ?>
           <div class="px-6 my-5">
             <a href="pages/user_add.php">
             <button
@@ -209,8 +209,10 @@ $connect->close();
             </button>
             </a>
           </div>
+          <?php endif; ?>
           </ul>
         </div>
+
       </aside>
       <!-- Mobile sidebar -->
       <!-- Backdrop -->

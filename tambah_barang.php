@@ -3,6 +3,7 @@ include 'config.php'; // Pastikan file ini mengandung informasi koneksi ke datab
 session_start();
 
 // Proses input barang baru
+
 if (isset($_POST['simpan'])) {
     $nama_barang = $_POST['nama_barang'];
     $stock = $_POST['stock'];
@@ -188,9 +189,10 @@ while ($row = $result_barang->fetch_assoc()) {
                 <span class="ml-4">Barang Keluar</span>
               </a>
             </li>
-           
+           <?php if ($_SESSION['role_id'] == '1') : ?>
           <div class="px-6 my-5">
             <a href="pages/user_add.php">
+
             <button
               class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
             >
@@ -199,7 +201,9 @@ while ($row = $result_barang->fetch_assoc()) {
             </button>
             </a>
           </div>
+          <?php endif; ?>
           </ul>
+
         </div>
       </aside>
       <!-- Mobile sidebar -->
@@ -554,4 +558,3 @@ while ($row = $result_barang->fetch_assoc()) {
   </div>
 </body>
 </html>
-
