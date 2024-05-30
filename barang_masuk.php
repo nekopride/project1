@@ -2,6 +2,8 @@
 include 'config.php';
 session_start();
 
+$error_message = '';
+
 // Proses input barang masuk
 if (isset($_POST['submit'])) {
     $id_barang = $_POST['id_barang'];
@@ -10,30 +12,30 @@ if (isset($_POST['submit'])) {
 
     if (!is_numeric($id_barang) || !is_numeric($jumlah_masuk)) {
         // Handle invalid input
-        die('Invalid input');
-    }
-
-    // Prepare the update stock query
-    $update_stock_stmt = $connect->prepare("UPDATE barang SET stock = stock + ? WHERE id_barang = ?");
-    $update_stock_stmt->bind_param("ii", $jumlah_masuk, $id_barang);
-
-    // Execute the query
-    if ($update_stock_stmt->execute()) {
-        // Prepare the insert barang masuk query
-        $insert_masuk_stmt = $connect->prepare("INSERT INTO barang_masuk (id_barang, jumlah_masuk, tanggal_masuk) VALUES (?, ?, ?)");
-        $insert_masuk_stmt->bind_param("iis", $id_barang, $jumlah_masuk, $tanggal_masuk);
+        $error_message = 'Invalid input';
+    } else {
+        // Prepare the update stock query
+        $update_stock_stmt = $connect->prepare("UPDATE barang SET stock = stock + ? WHERE id_barang = ?");
+        $update_stock_stmt->bind_param("ii", $jumlah_masuk, $id_barang);
 
         // Execute the query
-        if ($insert_masuk_stmt->execute()) {
-            header("Location:barang_masuk.php");
-            exit();
+        if ($update_stock_stmt->execute()) {
+            // Prepare the insert barang masuk query
+            $insert_masuk_stmt = $connect->prepare("INSERT INTO barang_masuk (id_barang, jumlah_masuk, tanggal_masuk) VALUES (?, ?, ?)");
+            $insert_masuk_stmt->bind_param("iis", $id_barang, $jumlah_masuk, $tanggal_masuk);
+
+            // Execute the query
+            if ($insert_masuk_stmt->execute()) {
+                header("Location:barang_masuk.php");
+                exit();
+            } else {
+                // Handle insertion error
+                $error_message = "Error: " . $insert_masuk_stmt->error;
+            }
         } else {
-            // Handle insertion error
-            echo "Error: " . $insert_masuk_stmt->error;
+            // Handle update stock error
+            $error_message = "Error: " . $update_stock_stmt->error;
         }
-    } else {
-        // Handle update stock error
-        echo "Error: " . $update_stock_stmt->error;
     }
 }
 

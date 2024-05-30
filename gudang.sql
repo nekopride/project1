@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 27 Bulan Mei 2024 pada 09.13
+-- Waktu pembuatan: 30 Bulan Mei 2024 pada 05.45
 -- Versi server: 10.1.32-MariaDB
 -- Versi PHP: 7.2.5
 
@@ -31,18 +31,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `barang` (
   `id_barang` int(11) NOT NULL,
   `nama_barang` varchar(255) DEFAULT NULL,
-  `stock` int(11) DEFAULT NULL
+  `stock` int(11) DEFAULT NULL,
+  `jenis` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `barang`
 --
 
-INSERT INTO `barang` (`id_barang`, `nama_barang`, `stock`) VALUES
-(1, 'kipas angin ', -2000),
-(2, 'karpet bulu domba', 100),
-(3, 'oli', 11),
-(4, 'pohon', 24);
+INSERT INTO `barang` (`id_barang`, `nama_barang`, `stock`, `jenis`) VALUES
+(25, 'oli', 901, 'lain lain'),
+(26, 'ali', 0, 'human');
 
 -- --------------------------------------------------------
 
@@ -56,16 +55,6 @@ CREATE TABLE `barang_keluar` (
   `jumlah_keluar` int(11) DEFAULT NULL,
   `tanggal_keluar` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data untuk tabel `barang_keluar`
---
-
-INSERT INTO `barang_keluar` (`id_keluar`, `id_barang`, `jumlah_keluar`, `tanggal_keluar`) VALUES
-(1, 1, 10, '2024-05-28'),
-(2, 1, 1000, '2024-05-28'),
-(3, 1, 1000, '2024-05-28'),
-(4, 2, 1000, '2024-05-13');
 
 -- --------------------------------------------------------
 
@@ -85,8 +74,8 @@ CREATE TABLE `barang_masuk` (
 --
 
 INSERT INTO `barang_masuk` (`id_masuk`, `id_barang`, `jumlah_masuk`, `tanggal_masuk`) VALUES
-(1, 2, 1000, '2024-05-27'),
-(2, 4, 2, '2024-05-27');
+(11, 25, 900, '2024-05-30'),
+(17, 25, 1, '2024-05-30');
 
 -- --------------------------------------------------------
 
@@ -176,19 +165,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`

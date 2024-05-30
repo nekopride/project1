@@ -1,43 +1,10 @@
-<?php
-include 'config.php';
-session_start();
-if (!isset ($_SESSION["auth"])){
-	header ("Location:pages/login.php");
-	exit;
-}
-$sql_users = "SELECT COUNT(*) as total_users FROM user"; // Query untuk menghitung jumlah pengguna
-$result_users = $connect->query($sql_users);
 
-$total_users = 0;
-if ($result_users->num_rows > 0) {
-    while($row_users = $result_users->fetch_assoc()) {
-        $total_users = $row_users["total_users"];
-    }
-}
-
-// Query untuk mengambil jumlah barang
-$sql_items = "SELECT COUNT(*) as total_items FROM barang"; // Query untuk menghitung jumlah barang
-$result_items = $connect->query($sql_items);
-
-$total_items = 0;
-if ($result_items->num_rows > 0) {
-    while($row_items = $result_items->fetch_assoc()) {
-        $total_items = $row_items["total_items"];
-    }
-}
-$sql_barang = "SELECT * FROM barang";
-$result_barang  = $connect->query($sql_barang);
-
-
-// Menutup koneksi
-$connect->close();
-?>
 <!DOCTYPE html>
 <html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sistem Gudang</title>
+    <title>List User</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -77,37 +44,55 @@ $connect->close();
           </a>
           <ul class="mt-6">
             <li class="relative px-6 py-3">
-              <span
-                class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-                aria-hidden="true"
-              ></span>
-              <a
-                class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                href="index.php"
-              >
-                <svg
-                  class="w-5 h-5"
-                  aria-hidden="true"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                <a
+                    class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 <?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'text-purple-600' : ''; ?>"
+                    href="index.php"
                 >
-                  <path
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                  ></path>
-                </svg>
-                <span class="ml-4">Home</span>
-              </a>
+                    <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                        ></path>
+                    </svg>
+                    <span class="ml-4">Home</span>
+                </a>
             </li>
-          </ul>
+            <li class="relative px-6 py-3">
+                <a
+                    class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 <?php echo basename($_SERVER['PHP_SELF']) == 'forms.php' ? 'text-purple-600' : ''; ?>"
+                    href="forms.php"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+                        ></path>
+                    </svg>
+                    <span class="ml-4">Forms</span>
+                </a>
+            </li>
+        </ul>
           <ul>
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="tambah_barang.php"
+                href="forms.html"
               >
                 <svg
                   class="w-5 h-5"
@@ -123,66 +108,96 @@ $connect->close();
                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
                   ></path>
                 </svg>
-                <span class="ml-4">List Barang</span>
+                <span class="ml-4">Forms</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="barang_masuk.php"
+                href="cards.html"
               >
-              <svg
-                class="w-5 h-5"
-                aria-hidden="true"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <!-- Panah ke bawah -->
-                <path d="M12 2v8" />
-                <path d="M9 7l3 3 3-3" />
-                
-                <!-- Kardus -->
-                <path d="M3 9l9-5 9 5-9 5-9-5z" />
-                <path d="M3 9v6l9 5 9-5V9" />
-                <path d="M12 14l9-5" />
-                <path d="M12 14L3 9" />
-              </svg>
-                <span class="ml-4">Barang Masuk</span> 
+                <svg
+                  class="w-5 h-5"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  ></path>
+                </svg>
+                <span class="ml-4">Cards</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="barang_keluar.php"
+                href="charts.html"
               >
-              <svg
-                class="w-5 h-5"
-                aria-hidden="true"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <!-- Panah ke bawah -->
-                <path d="M12 2v8" />
-                <path d="M9 7l3 -3 3 3" />
-                
-                <!-- Kardus -->
-                <path d="M3 9l9-5 9 5-9 5-9-5z" />
-                <path d="M3 9v6l9 5 9-5V9" />
-                <path d="M12 14l9-5" />
-                <path d="M12 14L3 9" />
-              </svg>
-                <span class="ml-4">Barang Keluar</span>
+                <svg
+                  class="w-5 h-5"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"
+                  ></path>
+                  <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
+                </svg>
+                <span class="ml-4">Charts</span>
               </a>
             </li>
-           
+            <li class="relative px-6 py-3">
+              <a
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                href="buttons.html"
+              >
+                <svg
+                  class="w-5 h-5"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+                  ></path>
+                </svg>
+                <span class="ml-4">Buttons</span>
+              </a>
+            </li>
+            <li class="relative px-6 py-3">
+              <a
+                class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+                href="tables.html"
+              >
+                <svg
+                  class="w-5 h-5"
+                  aria-hidden="true"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                </svg>
+                <span class="ml-4">Tables</span>
+              </a>
+            </li>
           <div class="px-6 my-5">
             <a href="pages/user_add.php">
             <button
@@ -229,37 +244,55 @@ $connect->close();
           </a>
           <ul class="mt-6">
             <li class="relative px-6 py-3">
-              <span
-                class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
-                aria-hidden="true"
-              ></span>
-              <a
-                class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100"
-                href="index.html"
-              >
-                <svg
-                  class="w-5 h-5"
-                  aria-hidden="true"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                <a
+                    class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 <?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'text-purple-600' : ''; ?>"
+                    href="index.php"
                 >
-                  <path
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                  ></path>
-                </svg>
-                <span class="ml-4">Home</span>
-              </a>
+                    <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0v6m0 0H7m6 0h6"
+                        ></path>
+                    </svg>
+                    <span class="ml-4">Home</span>
+                </a>
             </li>
-          </ul>
+            <li class="relative px-6 py-3">
+                <a
+                    class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 <?php echo basename($_SERVER['PHP_SELF']) == 'forms.php' ? 'text-purple-600' : ''; ?>"
+                    href="forms.php"
+                >
+                    <svg
+                        class="w-5 h-5"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0v6m0 0H7m6 0h6"
+                        ></path>
+                    </svg>
+                    <span class="ml-4">Forms</span>
+                </a>
+            </li>
+        </ul>
           <ul>
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="tambah_barang.php"
+                href="forms.html"
               >
                 <svg
                   class="w-5 h-5"
@@ -275,13 +308,13 @@ $connect->close();
                     d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
                   ></path>
                 </svg>
-                <span class="ml-4">barang</span>
+                <span class="ml-4">Forms</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="barang_masuk.php"
+                href="cards.html"
               >
                 <svg
                   class="w-5 h-5"
@@ -297,13 +330,13 @@ $connect->close();
                     d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
                   ></path>
                 </svg>
-                <span class="ml-4">barang masuk</span>
+                <span class="ml-4">Cards</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
               <a
                 class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                href="barang_keluar.php"
+                href="charts.html"
               >
                 <svg
                   class="w-5 h-5"
@@ -320,7 +353,7 @@ $connect->close();
                   ></path>
                   <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
                 </svg>
-                <span class="ml-4">barang keluar</span>
+                <span class="ml-4">Charts</span>
               </a>
             </li>
             <li class="relative px-6 py-3">
@@ -424,9 +457,7 @@ $connect->close();
             </button>
             <!-- Search input -->
             <div class="flex justify-center flex-1 lg:mr-32">
-              <div
-                class="relative w-full max-w-xl mr-6 focus-within:text-purple-500"
-              >
+              <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
                 <div class="absolute inset-y-0 flex items-center pl-2">
                   <svg
                     class="w-4 h-4"
@@ -501,18 +532,18 @@ $connect->close();
                           viewBox="0 0 24 24"
                           stroke="currentColor" 
                         >
-                        <g transform="translate(0, 2)" fill="#ac94fa">
+                        <g transform="translate(2, 2)" fill="#ac94fa">
                             <circle cx="8" cy="8" r="4"></circle>
                             <path d="M8 12c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
                           </g>
-                          <g transform="translate(8, 2)" fill="#ac94fa">
+                          <g transform="translate(9, 2)" fill="#ac94fa">
                             <circle cx="8" cy="8" r="4"></circle>
                             <path d="M8 12c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z">
                           </g>
                         </svg>
                       </a>
                   </button>
-                </li>              
+                </li>             
               <li class="flex">
                 <button>
                       <a
@@ -544,72 +575,11 @@ $connect->close();
             <h2
               class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200"
             >
-              Home
+              List User
             </h2>
-            <!-- Cards -->
-            <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-              <!-- Card -->
-              <div
-                class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-              >
-                <div
-                  class="p-3 mr-4 text-orange-500 bg-orange-100 rounded-full dark:text-orange-100 dark:bg-orange-500"
-                >
-                  <svg class="w-5 h-5" fill="#DAA520" viewBox="0 0 20 20">
-                    <path d="M5.32 3.81a1.25 1.25 0 00-.76.76L2.23 9.68a1.25 1.25 0 00-.23.71v7.56A1.25 1.25 0 003 19h14a1.25 1.25 0 001.25-1.25V10.39a1.25 1.25 0 00-.23-.71l-2.33-4.11a1.25 1.25 0 00-.76-.39H5.32zM16 10.39V18H4V10.39l2.1-3.7a.25.25 0 01.14-.1h7.52a.25.25 0 01.14.1zM14 6.5a2.75 2.75 0 11-5.5 0 2.75 2.75 0 015.5 0z"
-                    ></path>
-                  </svg>
-                </div>
-                <div>
-                  <p
-                    class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
-                  >
-                    Total barang
-                  </p>
-                  <p
-                    class="text-lg font-semibold text-gray-700 dark:text-gray-200"
-                  >
-                  <?php echo $total_items; ?>
-                  </p>
-                </div>
               </div>
-              <!-- Card -->
-              <div
-                class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
-              >
-                <div
-                  class="p-3 mr-4 text-teal-500 bg-teal-100 rounded-full dark:text-teal-100 dark:bg-teal-500"
-                >
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="10" cy="6" r="3" fill-rule="evenodd" clip-rule="evenodd"></circle>
-                  <path
-                    fill-rule="evenodd"
-                    d="M10 9a5 5 0 00-5 5v2h10v-2a5 5 0 00-5-5z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-
-                </div>
-                <div>
-                  <p
-                    class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400"
-                  >
-                    Jumlah User
-                  </p>
-                  <p
-                    class="text-lg font-semibold text-gray-700 dark:text-gray-200"
-                  >
-                  <?php echo $total_users; ?>
-                  </p>
-                </div>
-              </div>
-            </div>
-                </div>
-              </div>
-            </div>
+               
           </div>
-        </main>
-      </div>
-    </div>
+     </div>
   </body>
 </html>

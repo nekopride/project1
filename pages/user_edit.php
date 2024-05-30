@@ -1,6 +1,10 @@
 <?php
 include '../config.php';
 session_start();
+if (!isset ($_SESSION["auth"])){
+	header ("Location:login.php");
+	exit;
+}
 
 $roleQuery = "SELECT * FROM role";
 $role = mysqli_query($connect, $roleQuery);
