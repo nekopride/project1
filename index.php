@@ -28,7 +28,25 @@ if ($result_items->num_rows > 0) {
 $sql_barang = "SELECT * FROM barang";
 $result_barang  = $connect->query($sql_barang);
 
+// Query untuk mengambil data barang masuk per bulan
+$sql_barang_masuk = "SELECT MONTH(tanggal_masuk) as bulan, SUM(jumlah_masuk) as total FROM barang_masuk GROUP BY MONTH(tanggal_masuk)";
+$result_barang_masuk = $connect->query($sql_barang_masuk);
 
+
+$barang_masuk = [];
+while($row = $result_barang_masuk->fetch_assoc()) {
+    $barang_masuk[$row['bulan']] = $row['total'];
+}
+
+// Query untuk mengambil data barang keluar per bulan
+$sql_barang_keluar = "SELECT MONTH(tanggal_keluar) as bulan, SUM(jumlah_keluar) as total FROM barang_keluar GROUP BY MONTH(tanggal_keluar)";
+$result_barang_keluar = $connect->query($sql_barang_keluar);
+
+
+$barang_keluar = [];
+while($row = $result_barang_keluar->fetch_assoc()) {
+    $barang_keluar[$row['bulan']] = $row['total'];
+}
 // Menutup koneksi
 $connect->close();
 ?>
@@ -428,25 +446,7 @@ $connect->close();
                 class="relative w-full max-w-xl mr-6 focus-within:text-purple-500"
               >
                 <div class="absolute inset-y-0 flex items-center pl-2">
-                  <svg
-                    class="w-4 h-4"
-                    aria-hidden="true"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
                 </div>
-                <input
-                  class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
-                  type="text"
-                  placeholder="Cari barang"
-                  aria-label="Search"
-                />
               </div>
             </div>
             <ul class="flex items-center flex-shrink-0 space-x-6">
@@ -604,6 +604,53 @@ $connect->close();
                 </div>
               </div>
             </div>
+            <div class="bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-2">
+              <div style="width:1180px; height:575px;">
+                <!-- Canvas untuk grafik -->
+                <canvas id="myChart" width="1200" height="600"></canvas>
+              </div>
+            </div>
+
+            <script>
+
+            document.addEventListener("DOMContentLoaded", function() {
+              var ctx = document.getElementById('myChart').getContext('2d');
+              var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'],
+                    datasets: [{
+                      label: 'Barang Masuk',
+                      data: [<?php echo implode(',', $barang_masuk); ?>],
+                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                      borderColor: 'rgba(54, 162, 235, 1)',
+                      borderWidth: 1
+                  }, {
+                      label: 'Barang Keluar',
+                      data: [<?php echo implode(',', $barang_keluar); ?>],
+                      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                      borderColor: 'rgba(255, 99, 132, 1)',
+                      borderWidth: 1
+                  }]
+                },
+                      options: {
+                          scales: {
+                              y: {
+                                  beginAtZero: true,
+                                  stepSize: 100
+                              }
+                          },
+                          plugins: {
+                              legend: {
+                                  labels: {
+                                      color: 'white' // Mengubah warna tulisan legenda
+                                  }
+                              }
+                          }
+                      }
+                    });
+                  });
+            </script>
                 </div>
               </div>
             </div>
