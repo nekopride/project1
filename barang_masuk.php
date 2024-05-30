@@ -43,12 +43,22 @@ if (isset($_POST['submit'])) {
 $query_barang = "SELECT * FROM barang";
 $result_barang = $connect->query($query_barang);
 
+// Mengambil data barang keluar dari database untuk tampilan tabel
+$limit = 10; // Jumlah barang keluar per halaman
+$page = isset($_GET['page']) ? $_GET['page'] : 1; // Halaman saat ini
+$offset = ($page - 1) * $limit; // Offset untuk query
+
 // Mengambil data barang masuk dari database untuk tampilan tabel
 $query_masuk = "SELECT barang_masuk.id_masuk, barang.nama_barang, barang_masuk.jumlah_masuk, barang_masuk.tanggal_masuk
           FROM barang_masuk
-          JOIN barang ON barang.id_barang = barang_masuk.id_barang";
+          JOIN barang ON barang.id_barang = barang_masuk.id_barang
+          LIMIT $limit OFFSET $offset";
 $result_masuk = $connect->query($query_masuk);
+
+$total_masuk = mysqli_query($connect, "SELECT COUNT(*) AS total FROM barang_masuk")->fetch_assoc()['total'];
+$total_pages = ceil($total_masuk / $limit);
 ?>
+
 
 <!DOCTYPE html>
 <html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
@@ -308,8 +318,19 @@ $result_masuk = $connect->query($query_masuk);
                             </tbody>
                         </table>
                     </div>
+                    
                 </div>
+                <nav class="mt-8">
+                        <ul class="pagination flex">
+                            <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+                                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                    <a class="page-link px-3 py-1 rounded mx-1 <?php if ($i == $page) echo 'bg-active'; else echo 'bg-inactive'; ?>" href="barang_masuk.php?page=<?= $i; ?>"><?= $i; ?></a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </nav>
             </div>
+
         </main>
     </div>
 </div>

@@ -313,8 +313,19 @@ $total_pages = ceil($total_keluar / $limit);
                                 <?php } ?>
                             </tbody>
                         </table>
-                        </div>
+                        </div> 
                 </div>
+                     <nav class="mt-8">
+                            <ul class="pagination flex">
+                                <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
+                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
+                                    <a class="page-link px-3 py-1 rounded mx-1 <?php if ($i == $page) echo 'bg-active'; else echo 'bg-inactive'; ?>" href="barang_keluar.php?page=<?= $i; ?>"><?= $i; ?></a>
+                                    </li>
+                                <?php } ?>
+
+
+                            </ul>
+                    </nav>   
             </div>
         </main>
     </div>
