@@ -5,13 +5,16 @@ session_start();
 // Proses input barang baru
 if (isset($_POST['simpan'])) {
     $nama_barang = $_POST['nama_barang'];
-    $jenis = $_POST['jenis'];
+    $stock = $_POST['stock'];
 
-   
-  // Menambahkan barang ke database
-   mysqli_query($connect, "INSERT INTO barang VALUES ('', '$nama_barang', '0','$jenis')");     
-  $_SESSION['success'] = 'Berhasil menambahkan data';            
-    
+    // Validasi input stok
+    if ($stock < 0) {
+        $_SESSION['error'] = 'Stok tidak boleh negatif';
+    } else {
+        // Menambahkan barang ke database
+        mysqli_query($connect, "INSERT INTO barang VALUES ('', '$nama_barang', '$stock')");
+        $_SESSION['success'] = 'Berhasil menambahkan data';
+    }
 }
 
 // Mengambil data barang dari database untuk tampilan tabel
@@ -478,8 +481,8 @@ while ($row = $result_barang->fetch_assoc()) {
             </ul>
           </div>
         </header>
+    <main class="h-full pb-16 overflow-y-auto">
           <div class="container px-6 mx-auto grid">
-            <main class="h-full pb-16 overflow-y-auto">
             <div class="container">
         <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200">Tambah Barang</h1>
         <?php if (isset($_SESSION['notif'])) { ?>
@@ -491,38 +494,37 @@ while ($row = $result_barang->fetch_assoc()) {
         <form action="tambah_barang.php" method="post" class="mt-5">
             <div class="mb-4">
                 <label for="nama_barang" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Barang:</label>
-                <input type="text" name="nama_barang" id="nama_barang" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" required>
+                <input type="text" name="nama_barang" id="nama_barang" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" placeholder="nama barang" required>
             </div>
             <div class="mb-4">
-                <label for="jenis" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Jenis:</label>
-                <input type="text" name="jenis" id="jenis" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" required>
+                <label for="stock" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Stock:</label>
+                <input type="number" name="stock" id="stock" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" placeholder="jumlah stock" required>
             </div>
             <input type="submit" name="simpan" value="Simpan" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" style="background-color: #6A00CC; hover: background-color: #7A00DD;">
+
         </form>
 
         <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200 mt-8">List Barang</h1>
         <div class="overflow-x-auto">
         <table class="min-w-full w-full bg-white border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-        <thead class="bg-gray-800">
+          <thead class="bg-gray-800">
             <tr>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">ID Barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Nama Barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Stock</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Jenis barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Aksi</th>
             </tr>
 
-        </thead>
-        <tbody class="bg-gray-900 divide-y divide-gray-700">
-            <?php
-            $result_barang->data_seek(0); // Query ulang untuk reset pointer
-            if ($result_barang->num_rows > 0) {
+          </thead>
+            <tbody class="bg-gray-900 divide-y divide-gray-700">
+              <?php
+              $result_barang->data_seek(0); // Query ulang untuk reset pointer
+              if ($result_barang->num_rows > 0) {
                 while ($row = $result_barang->fetch_assoc()) {
                     echo "<tr>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['id_barang'] . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['nama_barang'] . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['stock'] . "</td>
-                            <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['jenis'] . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                             <a href='barang_hapus.php?id=" . $row["id_barang"] . "' style='background-color: #c81e1e;' class='text-white px-3 py-1 rounded hover:bg-red-700'>Hapus</a>
                             </td>
@@ -533,9 +535,9 @@ while ($row = $result_barang->fetch_assoc()) {
                 echo "<tr><td colspan='4' class='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>Tidak ada data barang</td></tr>";
             }
             ?>
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+      </div>
         <!-- Pagination -->
         <nav class="mt-8">
           <ul class="pagination flex">
@@ -552,3 +554,4 @@ while ($row = $result_barang->fetch_assoc()) {
   </div>
 </body>
 </html>
+
