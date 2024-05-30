@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 30 Bulan Mei 2024 pada 05.45
+-- Waktu pembuatan: 30 Bulan Mei 2024 pada 11.23
 -- Versi server: 10.1.32-MariaDB
 -- Versi PHP: 7.2.5
 
@@ -40,8 +40,18 @@ CREATE TABLE `barang` (
 --
 
 INSERT INTO `barang` (`id_barang`, `nama_barang`, `stock`, `jenis`) VALUES
-(25, 'oli', 901, 'lain lain'),
-(26, 'ali', 0, 'human');
+(38, 'teh gelas', 200, 'minuman '),
+(39, 'mie sedap goreng', 204, 'makanan '),
+(40, 'alamo', 100, 'minuman'),
+(42, 'Al Qodiri', 50, 'minuman'),
+(43, 'minyak sunco 2L', 100, 'bahan masak'),
+(44, 'tepung 999 500g', 500, 'bahan masak'),
+(45, 'kecap sedap 600ml', 100, 'bahan masak'),
+(46, 'minyak tropical 2L', 40, 'bahan masak'),
+(47, 'beras rajawali RRR 25 kg', 100, 'bahan masak'),
+(48, 'beras rajawali merah 25 kg', 100, 'bahan masak'),
+(49, 'beras rajawali emas 25kg', 500, 'bahan masak'),
+(50, 'rinso rose frest 750', 1300, 'deterjen');
 
 -- --------------------------------------------------------
 
@@ -55,6 +65,31 @@ CREATE TABLE `barang_keluar` (
   `jumlah_keluar` int(11) DEFAULT NULL,
   `tanggal_keluar` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `barang_keluar`
+--
+
+INSERT INTO `barang_keluar` (`id_keluar`, `id_barang`, `jumlah_keluar`, `tanggal_keluar`) VALUES
+(25, 38, 500, '2024-01-16'),
+(26, 42, 50, '2024-03-16'),
+(27, 49, 200, '2024-02-29'),
+(28, 39, 400, '2024-01-31'),
+(29, 38, 200, '2024-01-23'),
+(30, 38, 400, '2024-02-20'),
+(31, 48, 200, '2024-02-29'),
+(32, 39, 80, '2024-01-23'),
+(33, 42, 700, '2024-03-31'),
+(34, 46, 60, '2024-01-17'),
+(35, 44, 1500, '2024-03-12'),
+(36, 39, 16, '2024-05-30'),
+(37, 40, 900, '2024-02-21'),
+(38, 45, 1400, '2024-04-16'),
+(39, 47, 300, '2024-02-20'),
+(40, 46, 600, '2024-02-22'),
+(41, 42, 1200, '2024-04-30'),
+(42, 45, 300, '2024-05-30'),
+(43, 43, 1000, '2024-05-30');
 
 -- --------------------------------------------------------
 
@@ -74,8 +109,23 @@ CREATE TABLE `barang_masuk` (
 --
 
 INSERT INTO `barang_masuk` (`id_masuk`, `id_barang`, `jumlah_masuk`, `tanggal_masuk`) VALUES
-(11, 25, 900, '2024-05-30'),
-(17, 25, 1, '2024-05-30');
+(23, 38, 1000, '2024-01-01'),
+(24, 40, 1000, '2024-01-01'),
+(25, 42, 2000, '2024-03-12'),
+(26, 44, 2000, '2024-02-06'),
+(27, 49, 200, '2024-02-13'),
+(28, 46, 100, '2024-01-07'),
+(29, 45, 1800, '2024-03-13'),
+(30, 48, 300, '2024-02-14'),
+(31, 46, 600, '2024-01-08'),
+(32, 39, 700, '2024-01-09'),
+(33, 47, 400, '2024-01-10'),
+(34, 38, 100, '2024-05-30'),
+(35, 38, 200, '2024-04-04'),
+(36, 49, 500, '2024-04-16'),
+(37, 43, 1000, '2024-05-14'),
+(38, 50, 1300, '2024-05-30'),
+(39, 43, 100, '2024-05-30');
 
 -- --------------------------------------------------------
 
@@ -115,7 +165,6 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `nama`, `password`, `username`, `role_id`) VALUES
-(22, 'cristoper', '123123', 'cristoper', 2),
 (23, 'ilham', '111111', 'ilham', 1),
 (26, 'cristoper', '123123', 'neko', 2),
 (27, 'wafiq', '123', 'neko', 2);
@@ -165,19 +214,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
