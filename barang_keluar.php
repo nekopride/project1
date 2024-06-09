@@ -52,7 +52,7 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Barang Masuk</title>
+    <title>Barang Keluar</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/css/tailwind.output.css" />
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
@@ -62,6 +62,7 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
     <script src="./assets/js/charts-lines.js" defer></script>
     <script src="./assets/js/charts-pie.js" defer></script>
     <link rel="stylesheet" href="./assets/css/baru.css">
+    <link rel="stylesheet" href="./assets/css/keluar.css">
 </head>
 <body>
 
@@ -288,13 +289,11 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
           <div class="container px-6 mx-auto grid">
 
     <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200">Daftar Barang Keluar</h1>
-        <?php if (isset($_SESSION['error'])) { ?>
-            <div class="alert alert-danger" role="alert">
-                <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
-            </div>
-        <?php } ?>
-
-            
+      <?php if (isset($_SESSION['error'])) { ?>
+        <div class="<?php echo $darkTheme ? 'custom-alert-light' : 'custom-alert-dark'; ?>" role="alert">
+          <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+        </div>
+      <?php } ?>
 
         <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
                     <form method="post" action="">
@@ -315,11 +314,23 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
                         <input name="submit" type="submit" value="Tambah" class="mt-4 px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700" />
                     </form>
                 </div>
-                <div >
+                <div>
                   <form method="post">
-                    <input type="date" name="dari_tanggal" value="cari" required="required"><br><br>
-                    <input type="date" name="akhir_tanggal" value="cari" required="required">
-                    <input type="submit" name="cari" class="btn btn-primary" value="cari">
+                    <div class="flex">
+                      <div class="w-1/2 pr-2">
+                        <label class="block text-sm">
+                          <span class="text-gray-700 dark:text-gray-400">Dari Tanggal</span>
+                          <input type="date" name="dari_tanggal" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" required="required">
+                        </label>
+                      </div>
+                      <div class="w-1/2 pl-2">
+                        <label class="block text-sm">
+                          <span class="text-gray-700 dark:text-gray-400">Sampai Tanggal</span>
+                          <input type="date" name="akhir_tanggal" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" required="required">
+                        </label>
+                      </div>
+                    </div>
+                    <input type="submit" name="cari" class="mt-4 px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700" value="Cari">
                   </form>
                 </div>
 
