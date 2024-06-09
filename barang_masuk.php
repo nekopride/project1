@@ -13,33 +13,29 @@ if (isset($_POST['submit'])) {
     $id_barang = $_POST['id_barang'];
     $jumlah_masuk = $_POST['jumlah_masuk'];
     $tanggal_masuk = date('Y-m-d');
+    $nama_user = $_SESSION['nama'];
 
     if (!is_numeric($id_barang) || !is_numeric($jumlah_masuk)) {
         // Handle invalid input
         $error_message = 'Invalid input';
     } else {
+        $cek_stok = "SELECT stock FROM barang WHERE id_barang = $id_barang";
+        $stok_result = mysqli_query($connect, $cek_stok);
+        $stok_data = mysqli_fetch_assoc($stok_result);
+
         // Prepare the update stock query
-        $update_stock_stmt = $connect->prepare("UPDATE barang SET stock = stock + ? WHERE id_barang = ?");
-        $update_stock_stmt->bind_param("ii", $jumlah_masuk, $id_barang);
-
-        // Execute the query
-        if ($update_stock_stmt->execute()) {
-            // Prepare the insert barang masuk query
-            $insert_masuk_stmt = $connect->prepare("INSERT INTO barang_masuk (id_barang, jumlah_masuk, tanggal_masuk) VALUES (?, ?, ?)");
-            $insert_masuk_stmt->bind_param("iis", $id_barang, $jumlah_masuk, $tanggal_masuk);
-
-            // Execute the query
-            if ($insert_masuk_stmt->execute()) {
-                header("Location:barang_masuk.php");
-                exit();
-            } else {
-                // Handle insertion error
-                $error_message = "Error: " . $insert_masuk_stmt->error;
-            }
-        } else {
-            // Handle update stock error
-            $error_message = "Error: " . $update_stock_stmt->error;
-        }
+        
+          // Update stock barang
+          $update_stock = "UPDATE barang SET stock = stock + $jumlah_masuk WHERE id_barang = $id_barang";
+          mysqli_query($connect, $update_stock);
+  
+          // Menambahkan record ke tabel barang_masuk
+          $barang_masuk = "INSERT INTO barang_masuk (id_barang, jumlah_masuk, tanggal_masuk, nama) VALUES ($id_barang, $jumlah_masuk, '$tanggal_masuk', '$nama_user')";
+          mysqli_query($connect, $barang_masuk);
+  
+          header("Location: barang_masuk.php");
+          exit();
+        
     }
 }
 
@@ -53,7 +49,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 1; // Halaman saat ini
 $offset = ($page - 1) * $limit; // Offset untuk query
 
 // Mengambil data barang masuk dari database untuk tampilan tabel
-$query_masuk = "SELECT barang_masuk.id_masuk, barang.nama_barang, barang_masuk.jumlah_masuk, barang_masuk.tanggal_masuk
+$query_masuk = "SELECT barang_masuk.id_masuk, barang.nama_barang, barang_masuk.jumlah_masuk, barang_masuk.tanggal_masuk, barang_masuk.nama
           FROM barang_masuk
           JOIN barang ON barang.id_barang = barang_masuk.id_barang
           LIMIT $limit OFFSET $offset";
@@ -316,6 +312,7 @@ $total_pages = ceil($total_masuk / $limit);
                                     <th class="px-4 py-3">Nama Barang</th>
                                     <th class="px-4 py-3">Jumlah Masuk</th>
                                     <th class="px-4 py-3">Tanggal Masuk</th>
+                                    <th class="px-4 py-3">Yang memasukkan</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -325,6 +322,7 @@ $total_pages = ceil($total_masuk / $limit);
                                         <td class="px-4 py-3 text-sm"><?php echo $data_masuk['nama_barang']; ?></td>
                                         <td class="px-4 py-3 text-sm"><?php echo $data_masuk['jumlah_masuk']; ?></td>
                                         <td class="px-4 py-3 text-sm"><?php echo $data_masuk['tanggal_masuk']; ?></td>
+                                        <td class="px-4 py-3 text-sm"><?php echo $data_masuk['nama']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

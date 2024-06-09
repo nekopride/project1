@@ -11,6 +11,7 @@ if (isset($_POST['submit'])) {
     $id_barang = $_POST['id_barang'];
     $jumlah_keluar = $_POST['jumlah_keluar'];
     $tanggal_keluar = date('Y-m-d');
+    $nama = $_SESSION['nama'];
 
     // Cek stok saat ini
     $cek_stok = "SELECT stock FROM barang WHERE id_barang = $id_barang";
@@ -23,7 +24,7 @@ if (isset($_POST['submit'])) {
         mysqli_query($connect, $update_stock);
 
         // Menambahkan record ke tabel barang_keluar
-        $barang_keluar = "INSERT INTO barang_keluar (id_barang, jumlah_keluar, tanggal_keluar) VALUES ($id_barang, $jumlah_keluar, '$tanggal_keluar')";
+        $barang_keluar = "INSERT INTO barang_keluar (id_barang, jumlah_keluar, tanggal_keluar) VALUES ($id_barang, $jumlah_keluar, '$tanggal_keluar','$nama')";
         mysqli_query($connect, $barang_keluar);
 
         header("Location: barang_keluar.php");
@@ -37,20 +38,13 @@ if (isset($_POST['submit'])) {
 $query_barang = "SELECT * FROM barang WHERE stock > 0";
 $result_barang = mysqli_query($connect, $query_barang);
 
-// Mengambil data barang keluar dari database untuk tampilan tabel
-$limit = 10; // Jumlah barang keluar per halaman
-$page = isset($_GET['page']) ? $_GET['page'] : 1; // Halaman saat ini
-$offset = ($page - 1) * $limit; // Offset untuk query
 
-$query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_keluar.jumlah_keluar, barang_keluar.tanggal_keluar
+$query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_keluar.jumlah_keluar, barang_keluar.tanggal_keluar, barang_keluar.nama
           FROM barang_keluar
-          JOIN barang ON barang.id_barang = barang_keluar.id_barang
-          LIMIT $limit OFFSET $offset";
-$result_keluar = mysqli_query($connect, $query_keluar);
+          JOIN barang ON barang.id_barang = barang_keluar.id_barang";
 
-// Menghitung total halaman
-$total_keluar = mysqli_query($connect, "SELECT COUNT(*) AS total FROM barang_keluar")->fetch_assoc()['total'];
-$total_pages = ceil($total_keluar / $limit);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -143,10 +137,8 @@ $total_pages = ceil($total_keluar / $limit);
             <?php endif; ?>
         </div>
     </aside>
-
-
     <div class="flex flex-col flex-1 w-full">
-        <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
+      <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
         <div
             class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300"
           >
@@ -170,8 +162,32 @@ $total_pages = ceil($total_keluar / $limit);
               </svg>
             </button>
             <!-- Search input -->
-            <div class="">
-             
+            <div class="flex justify-center flex-1 lg:mr-32">
+              <div
+                class="relative w-full max-w-xl mr-6 focus-within:text-purple-500"
+              >
+                <div class="absolute inset-y-0 flex items-center pl-2">
+                  <svg
+                    class="w-4 h-4"
+                    aria-hidden="true"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+                <input
+                  class="w-full pl-8 pr-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+                  type="text"
+                  placeholder="Cari barang"
+                  aria-label="Search"
+                  id="cariBarang" "tanggal-keluar"
+                />
+              </div>
             </div>
             <ul class="flex items-center flex-shrink-0 space-x-6">
               <!-- Theme toggler -->
@@ -299,6 +315,13 @@ $total_pages = ceil($total_keluar / $limit);
                         <input name="submit" type="submit" value="Tambah" class="mt-4 px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700" />
                     </form>
                 </div>
+                <div >
+                  <form method="post">
+                    <input type="date" name="dari_tanggal" value="cari" required="required"><br><br>
+                    <input type="date" name="akhir_tanggal" value="cari" required="required">
+                    <input type="submit" name="cari" class="btn btn-primary" value="cari">
+                  </form>
+                </div>
 
                 <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
                     Data Barang Keluar
@@ -312,35 +335,63 @@ $total_pages = ceil($total_keluar / $limit);
                                     <th class="px-4 py-3">Nama Barang</th>
                                     <th class="px-4 py-3">Jumlah Keluar</th>
                                     <th class="px-4 py-3">Tanggal Keluar</th>
+                                    <th class="px-4 py-3">memasukkan data</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                                <?php while($row = mysqli_fetch_array($result_keluar)) { ?>
-                                    <tr class="text-gray-700 dark:text-gray-400">
+
+                                <?php
+                                $no = 1;
+                                if (isset($_POST['cari'])) {
+                                  $dari_tanggal = $_POST['dari_tanggal'];
+                                  $akhir_tanggal = $_POST['akhir_tanggal'];
+                              
+                                  $stmt = $connect->prepare("SELECT barang_keluar.id_keluar, barang.nama_barang, barang_keluar.jumlah_keluar, barang_keluar.tanggal_keluar, barang_keluar.nama
+                                  FROM barang_keluar
+                                  JOIN barang ON barang.id_barang = barang_keluar.id_barang
+                                  WHERE barang_keluar.tanggal_keluar BETWEEN? AND?");
+                                  $stmt->bind_param("ss", $dari_tanggal, $akhir_tanggal);
+                                  $stmt->execute();
+                                  $result_keluar = $stmt->get_result();
+                              
+                                }else {
+                                  $result_keluar= mysqli_query($connect,"SELECT barang_keluar.id_keluar, barang.nama_barang, barang_keluar.jumlah_keluar, barang_keluar.tanggal_keluar, barang_keluar.nama
+                                  FROM barang_keluar
+                                  JOIN barang ON barang.id_barang = barang_keluar.id_barang");
+                                } 
+                                 while($row = mysqli_fetch_array($result_keluar)) {?>
+                                    <tr class="text-gray-700 dark:text-gray-400 keluar-row">
                                         <td class="px-4 py-3 text-sm"><?php echo $row['id_keluar']; ?></td>
-                                        <td class="px-4 py-3 text-sm"><?php echo $row['nama_barang']; ?></td>
+                                        <td class="px-4 py-3 text-sm nama-barang"><?php echo $row['nama_barang']; ?></td>
                                         <td class="px-4 py-3 text-sm"><?php echo $row['jumlah_keluar']; ?></td>
-                                        <td class="px-4 py-3 text-sm"><?php echo $row['tanggal_keluar']; ?></td>
+                                        <td class="px-4 py-3 text-sm tanggal-keluar"><?php echo $row['tanggal_keluar']; ?></td>
+                                        <td class="px-4 py-3 text-sm"><?php echo $row['nama']; ?></td>
                                     </tr>
                                 <?php } ?>
+                                
                             </tbody>
                         </table>
                         </div> 
                 </div>
-                     <nav class="mt-8">
-                            <ul class="pagination flex">
-                                <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                    <a class="page-link px-3 py-1 rounded mx-1 <?php if ($i == $page) echo 'bg-active'; else echo 'bg-inactive'; ?>" href="barang_keluar.php?page=<?= $i; ?>"><?= $i; ?></a>
-                                    </li>
-                                <?php } ?>
-
-
-                            </ul>
-                    </nav>   
+                     
             </div>
         </main>
     </div>
 </div>
+<script>
+        document.getElementById("cariBarang").addEventListener('input', function(){
+          const cariBarang = this.value.toLowerCase();
+          const resultBarang = document.getElementsByClassName("keluar-row");
+          const userBarang = document.getElementsByClassName("tanggal-keluar" , "nama-barang");
+          for (i=0; i < userBarang.length; i++){
+            const userCheck = userBarang[i].textContent;
+            if (userCheck.includes(cariBarang)  ){
+              resultBarang[i].classList.remove('hidden');
+            } else{
+              resultBarang[i].classList.add('hidden');
+            }
+          }
+        })
+     </script>
 </body>
-</html>
+</html> 
