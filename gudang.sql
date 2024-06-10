@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 09 Jun 2024 pada 09.46
+-- Waktu pembuatan: 10 Jun 2024 pada 14.43
 -- Versi server: 10.1.32-MariaDB
 -- Versi PHP: 7.2.5
 
@@ -32,32 +32,32 @@ CREATE TABLE `barang` (
   `id_barang` int(11) NOT NULL,
   `nama_barang` varchar(255) DEFAULT NULL,
   `stock` int(11) DEFAULT NULL,
-  `jenis` varchar(20) NOT NULL
+  `jenis` varchar(20) NOT NULL,
+  `harga` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `barang`
 --
 
-INSERT INTO `barang` (`id_barang`, `nama_barang`, `stock`, `jenis`) VALUES
-(38, 'teh gelas', 230, 'minuman '),
-(39, 'mie sedap goreng', 100, 'makanan '),
-(40, 'alamo', 100, 'minuman'),
-(42, 'Al Qodiri', 50, 'minuman'),
-(43, 'minyak sunco 2L', 100, 'bahan masak'),
-(44, 'tepung 999 500g', 500, 'bahan masak'),
-(45, 'kecap sedap 600ml', 100, 'bahan masak'),
-(46, 'minyak tropical 2L', 40, 'bahan masak'),
-(47, 'beras rajawali RRR 25 kg', 100, 'bahan masak'),
-(48, 'beras rajawali merah 25 kg', 100, 'bahan masak'),
-(49, 'beras rajawali emas 25kg', 500, 'bahan masak'),
-(50, 'rinso rose frest 750', 1300, 'deterjen'),
-(51, 'so klin 700 ml', 100, 'deterjen '),
-(52, 'aqua galon', 0, 'minuman'),
-(53, 'mie sedap soto', 40, 'makanan '),
-(54, 'mie soto', 0, 'makanan '),
-(55, 'aqua gelas', 1, 'minuman'),
-(56, 'pop mie rasa ayam', 100, 'makanan ');
+INSERT INTO `barang` (`id_barang`, `nama_barang`, `stock`, `jenis`, `harga`) VALUES
+(38, 'teh gelas', 20, 'perbox', 100000),
+(39, 'mie sedap goreng', 100, 'perbox', 106000),
+(40, 'alamo', 90, 'perbox', 20000),
+(42, 'Al Qodiri', 50, 'perbox', 14000),
+(43, 'minyak sunco 2L', 100, 'perbox', 261000),
+(44, 'tepung terigu segitiga 500 g', 450, 'perbox', 140000),
+(45, 'kecap sedap 600ml', 100, 'perbox', 210000),
+(46, 'minyak tropical 2L', 40, 'perbox', 221000),
+(47, 'beras rajawali RRR 25 kg', 100, 'per karung', 350000),
+(48, 'beras rajawali merah 25 kg', 100, 'per karung', 315000),
+(49, 'beras rajawali emas 25kg', 500, 'per karung', 370000),
+(50, 'rinso rose frest 750', 1300, 'perbox', 124000),
+(51, 'so klin 700 ml', 100, 'perbox', 64000),
+(52, 'aqua galon', 0, 'per buah', 43900),
+(53, 'mie sedap soto', 40, 'perbox', 108000),
+(56, 'pop mie rasa ayam', 100, 'perbox', 120000),
+(60, 'ali', 1, 'manusia', 1000);
 
 -- --------------------------------------------------------
 
@@ -78,34 +78,33 @@ CREATE TABLE `barang_keluar` (
 --
 
 INSERT INTO `barang_keluar` (`id_keluar`, `id_barang`, `jumlah_keluar`, `tanggal_keluar`, `nama`) VALUES
-(25, 38, 500, '2024-01-16', ''),
-(26, 42, 50, '2024-03-16', ''),
-(27, 49, 200, '2024-02-29', ''),
-(28, 39, 400, '2024-01-31', ''),
-(29, 38, 200, '2024-01-23', ''),
-(30, 38, 400, '2024-02-20', ''),
-(31, 48, 200, '2024-02-29', ''),
-(32, 39, 80, '2024-01-23', ''),
-(33, 42, 700, '2024-03-31', ''),
-(34, 46, 60, '2024-01-17', ''),
-(35, 44, 1500, '2024-03-12', ''),
-(36, 39, 16, '2024-05-30', ''),
-(37, 40, 900, '2024-02-21', ''),
-(38, 45, 1400, '2024-04-16', ''),
-(39, 47, 300, '2024-02-20', ''),
-(40, 46, 600, '2024-02-22', ''),
-(41, 42, 1200, '2024-04-30', ''),
-(42, 45, 300, '2024-05-30', ''),
-(43, 43, 1000, '2024-05-30', ''),
-(44, 51, 900, '2024-05-30', ''),
-(45, 52, 100, '2024-05-31', ''),
-(46, 53, 60, '2024-05-31', ''),
-(47, 54, 100, '2024-05-31', ''),
-(48, 55, 99, '2024-05-31', ''),
+(25, 38, 500, '2024-01-16', 'cristoper'),
+(26, 42, 50, '2024-03-16', 'davin'),
+(27, 49, 200, '2024-02-29', 'wafiq'),
+(28, 39, 400, '2024-01-31', 'ilham'),
+(29, 38, 200, '2024-01-23', 'cristoper'),
+(30, 38, 400, '2024-02-20', 'cristoper'),
+(31, 48, 200, '2024-02-29', 'ilham'),
+(32, 39, 80, '2024-01-23', 'wafiq'),
+(33, 42, 700, '2024-03-31', 'davin'),
+(34, 46, 60, '2024-01-17', 'wafiq'),
+(35, 44, 1500, '2024-03-12', 'davin'),
+(36, 39, 16, '2024-05-30', 'cristoper'),
+(37, 40, 900, '2024-02-21', 'ilham'),
+(38, 45, 1400, '2024-04-16', 'cristoper'),
+(39, 47, 300, '2024-02-20', 'davin'),
+(40, 46, 600, '2024-02-22', 'wafiq'),
+(41, 42, 1200, '2024-04-30', 'ilham'),
+(42, 45, 300, '2024-05-30', 'davin'),
+(43, 43, 1000, '2024-05-30', 'wafiq'),
+(44, 51, 900, '2024-05-30', 'davin'),
+(45, 52, 100, '2024-05-31', 'ilham'),
+(46, 53, 60, '2024-05-31', 'wafiq'),
 (49, 38, 100, '2024-06-08', 'ilham'),
 (50, 39, 4, '2024-06-08', 'ilham'),
 (51, 39, 100, '2024-06-08', 'wafiq'),
-(52, 38, 10, '2024-06-08', 'wafiq');
+(52, 38, 10, '2024-06-08', 'wafiq'),
+(53, 38, 500, '2024-06-10', 'ilham');
 
 -- --------------------------------------------------------
 
@@ -126,32 +125,33 @@ CREATE TABLE `barang_masuk` (
 --
 
 INSERT INTO `barang_masuk` (`id_masuk`, `id_barang`, `jumlah_masuk`, `tanggal_masuk`, `nama`) VALUES
-(23, 38, 1000, '2024-01-01', ''),
-(24, 40, 1000, '2024-01-01', ''),
-(25, 42, 2000, '2024-03-12', ''),
-(26, 44, 2000, '2024-02-06', ''),
-(27, 49, 200, '2024-02-13', ''),
-(28, 46, 100, '2024-01-07', ''),
-(29, 45, 1800, '2024-03-13', ''),
-(30, 48, 300, '2024-02-14', ''),
-(31, 46, 600, '2024-01-08', ''),
-(32, 39, 700, '2024-01-09', ''),
-(33, 47, 400, '2024-01-10', ''),
-(34, 38, 100, '2024-05-30', ''),
-(35, 38, 200, '2024-04-04', ''),
-(36, 49, 500, '2024-04-16', ''),
-(37, 43, 1000, '2024-05-14', ''),
-(38, 50, 1300, '2024-05-30', ''),
-(39, 43, 100, '2024-05-30', ''),
-(40, 51, 1000, '2024-05-30', ''),
-(41, 52, 100, '2024-05-31', ''),
-(42, 53, 100, '2024-05-31', ''),
-(43, 54, 100, '2024-05-31', ''),
-(44, 55, 100, '2024-05-31', ''),
+(23, 38, 1000, '2024-01-01', 'cristoper'),
+(24, 40, 1000, '2024-01-01', 'ilham'),
+(25, 42, 2000, '2024-03-12', 'davin'),
+(26, 44, 2000, '2024-02-06', 'ilham'),
+(27, 49, 200, '2024-02-13', 'wafiq'),
+(28, 46, 100, '2024-01-07', 'ilham'),
+(29, 45, 1800, '2024-03-13', 'ilham\r\n'),
+(30, 48, 300, '2024-02-14', 'cristoper'),
+(31, 46, 600, '2024-01-08', 'wafiq\r\n'),
+(32, 39, 700, '2024-01-09', 'ilham'),
+(33, 47, 400, '2024-01-10', 'ilham'),
+(34, 38, 100, '2024-05-30', 'ilham'),
+(35, 38, 200, '2024-04-04', 'ilham'),
+(36, 49, 500, '2024-04-16', 'ilham'),
+(37, 43, 1000, '2024-05-14', 'ilham'),
+(38, 50, 1300, '2024-05-30', 'ilham'),
+(39, 43, 100, '2024-05-30', 'davin'),
+(40, 51, 1000, '2024-05-30', 'cristoper'),
+(41, 52, 100, '2024-05-31', 'ilham'),
+(42, 53, 100, '2024-05-31', 'davin'),
 (45, 38, 10, '2024-06-08', 'wafiq'),
 (46, 38, 10, '2024-06-08', 'wafiq'),
 (47, 38, 100, '2024-06-08', 'wafiq'),
-(48, 56, 100, '2024-06-08', 'ilham');
+(48, 56, 100, '2024-06-08', 'ilham'),
+(49, 38, 100, '2024-06-10', 'ilham'),
+(50, 38, 1000, '2024-06-10', 'ilham'),
+(53, 60, 1, '2024-06-10', 'lukman');
 
 -- --------------------------------------------------------
 
@@ -243,19 +243,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id_barang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_keluar`
 --
 ALTER TABLE `barang_keluar`
-  MODIFY `id_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id_keluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT untuk tabel `barang_masuk`
 --
 ALTER TABLE `barang_masuk`
-  MODIFY `id_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id_masuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
