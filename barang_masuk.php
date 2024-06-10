@@ -43,20 +43,14 @@ if (isset($_POST['submit'])) {
 $query_barang = "SELECT * FROM barang";
 $result_barang = $connect->query($query_barang);
 
-// Mengambil data barang keluar dari database untuk tampilan tabel
-$limit = 10; // Jumlah barang keluar per halaman
-$page = isset($_GET['page']) ? $_GET['page'] : 1; // Halaman saat ini
-$offset = ($page - 1) * $limit; // Offset untuk query
 
 // Mengambil data barang masuk dari database untuk tampilan tabel
 $query_masuk = "SELECT barang_masuk.id_masuk, barang.nama_barang, barang_masuk.jumlah_masuk, barang_masuk.tanggal_masuk, barang_masuk.nama
           FROM barang_masuk
-          JOIN barang ON barang.id_barang = barang_masuk.id_barang
-          LIMIT $limit OFFSET $offset";
-$result_masuk = $connect->query($query_masuk);
+          JOIN barang ON barang.id_barang = barang_masuk.id_barang";
 
-$total_masuk = mysqli_query($connect, "SELECT COUNT(*) AS total FROM barang_masuk")->fetch_assoc()['total'];
-$total_pages = ceil($total_masuk / $limit);
+
+
 ?>
 
 
@@ -275,6 +269,7 @@ $total_pages = ceil($total_masuk / $limit);
         </header>
         <main class="h-full pb-16 overflow-y-auto">
           <div class="container px-6 mx-auto grid">
+            
 
     <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200">
                     Barang Masuk
@@ -299,10 +294,41 @@ $total_pages = ceil($total_masuk / $limit);
                         <input name="submit" type="submit" value="Tambah" class="mt-4 px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700" />
                     </form>
                 </div>
+                <div class="mx-auto max-w-md"><center>
+                  <form method="post">
+                    <div class="flex">
+                      <div class="w-1/2 pr-2">
+                        <label class="block text-sm">
+                          <span class="text-gray-700 dark:text-gray-400">Dari Tanggal</span>
+                          <input type="date" name="dari_tanggal" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" required="required">
+                        </label>
+                      </div>
+                      <div class="w-1/2 pl-2">
+                        <label class="block text-sm">
+                          <span class="text-gray-700 dark:text-gray-400">Sampai Tanggal</span>
+                          <input type="date" name="akhir_tanggal" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input" required="required">
+                        </label>
+                      </div>
+                    </div>
+                    <input type="submit" name="cari" class="mt-4 px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700" value="Cari">
+                  </form>
+                </div></center>
+                <br><br>
+           
+                  <center><br><h1 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300" >LAPORAN PEMASUKAN BARANG </h1></center>
+                  <center >
+               <?php  
+               if(isset($_POST['cari'])){
+                $dari_tanggal = $_POST['dari_tanggal'];
+                $akhir_tanggal = $_POST['akhir_tanggal'];
+                 echo "Dari tanggal " . $dari_tanggal . " Sampai Tanggal " . $akhir_tanggal;
+               }
+               ?></center>
+          
 
-                <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
+                <center><br><h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
                     Data Barang Masuk
-                </h4>
+                </h4></center>
                 <div class="w-full overflow-hidden rounded-lg shadow-xs">
                     <div class="w-full overflow-x-auto">
                         <table class="w-full whitespace-no-wrap">
@@ -315,8 +341,26 @@ $total_pages = ceil($total_masuk / $limit);
                                     <th class="px-4 py-3">Yang memasukkan</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                                <?php while($data_masuk = mysqli_fetch_array($result_masuk)) { ?>
+                            <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800"><?php
+                                $no = 1;
+                                if (isset($_POST['cari'])) {
+                                  $dari_tanggal = $_POST['dari_tanggal'];
+                                  $akhir_tanggal = $_POST['akhir_tanggal'];
+                              
+                                  $stmt = $connect->prepare("SELECT barang_masuk.id_masuk, barang.nama_barang, barang_masuk.jumlah_masuk, barang_masuk.tanggal_masuk, barang_masuk.nama
+                                    FROM barang_masuk
+                                    JOIN barang ON barang.id_barang = barang_masuk.id_barang
+                                  WHERE barang_masuk.tanggal_masuk BETWEEN? AND?");
+                                  $stmt->bind_param("ss", $dari_tanggal, $akhir_tanggal);
+                                  $stmt->execute();
+                                  $result_masuk = $stmt->get_result();
+                              
+                                }else {
+                                  $result_masuk= mysqli_query($connect,"SELECT barang_masuk.id_masuk, barang.nama_barang, barang_masuk.jumlah_masuk, barang_masuk.tanggal_masuk, barang_masuk.nama
+                                    FROM barang_masuk
+                                    JOIN barang ON barang.id_barang = barang_masuk.id_barang");
+                                } 
+                                 while($data_masuk = mysqli_fetch_array($result_masuk)) {?>
                                     <tr class="text-gray-700 dark:text-gray-400">
                                         <td class="px-4 py-3 text-sm"><?php echo $data_masuk['id_masuk']; ?></td>
                                         <td class="px-4 py-3 text-sm"><?php echo $data_masuk['nama_barang']; ?></td>
@@ -330,15 +374,7 @@ $total_pages = ceil($total_masuk / $limit);
                     </div>
                     
                 </div>
-                <nav class="mt-8">
-                        <ul class="pagination flex">
-                            <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                                    <a class="page-link px-3 py-1 rounded mx-1 <?php if ($i == $page) echo 'bg-active'; else echo 'bg-inactive'; ?>" href="barang_masuk.php?page=<?= $i; ?>"><?= $i; ?></a>
-                                </li>
-                            <?php } ?>
-                        </ul>
-                    </nav>
+               
             </div>
 
         </main>

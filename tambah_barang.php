@@ -9,25 +9,23 @@ if (!isset ($_SESSION["auth"])){
 if (isset($_POST['simpan'])) {
     $nama_barang = $_POST['nama_barang'];
     $jenis = $_POST['jenis'];
+    $harga = $_POST['harga'];
+
 
 
         // Menambahkan barang ke database
-        mysqli_query($connect, "INSERT INTO barang VALUES ('', '$nama_barang', '0','$jenis')");
+        mysqli_query($connect, "INSERT INTO barang VALUES ('', '$nama_barang', '0','$jenis','$harga')");
         $_SESSION['success'] = 'Berhasil menambahkan data';
     
 }
 
-// Mengambil data barang dari database untuk tampilan tabel
-$limit = 10; // Jumlah barang per halaman
-$page = isset($_GET['page']) ? $_GET['page'] : 1; // Halaman saat ini
-$offset = ($page - 1) * $limit; // Offset untuk query
 
-$query_barang = "SELECT * FROM barang LIMIT $limit OFFSET $offset";
+$query_barang = "SELECT * FROM barang ";
 $result_barang = $connect->query($query_barang);
 
 // Menghitung total halaman
 $total_barang = $connect->query("SELECT COUNT(*) AS total FROM barang")->fetch_assoc()['total'];
-$total_pages = ceil($total_barang / $limit);
+
 
 // Cek stok habis dan set notifikasi
 while ($row = $result_barang->fetch_assoc()) {
@@ -492,12 +490,14 @@ while ($row = $result_barang->fetch_assoc()) {
           <div class="container px-6 mx-auto grid">
             <div class="container">
         <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200">Tambah Barang</h1>
-        <?php if (isset($_SESSION['notif'])) { ?>
-          <div class="alert alert-warning" :class="{'alert-dark': dark, 'alert-light': !dark}" role="alert">
-                <?php echo $_SESSION['notif']; unset($_SESSION['notif']); ?>
-            </div>
-
-        <?php } ?>
+        <?php if (isset($_SESSION['notif'])) {?>
+  <div class="alert alert-warning" :class="{'alert-dark': dark, 'alert-light':!dark}" role="alert">
+    <?php echo $_SESSION['notif']; unset($_SESSION['notif']);?>
+  </div>
+  <script>
+    alert("<?php echo $_SESSION['notif']; unset($_SESSION['notif']);?>");
+  </script>
+<?php }?>
         <form action="tambah_barang.php" method="post" class="mt-5">
             <div class="mb-4">
                 <label for="nama_barang" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Nama Barang:</label>
@@ -506,6 +506,10 @@ while ($row = $result_barang->fetch_assoc()) {
             <div class="mb-4">
                 <label for="jenis" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Jenis:</label>
                 <input type="text" name="jenis" id="jenis" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" placeholder="jenis barang" required>
+            </div>
+            <div class="mb-4">
+                <label for="harga" class="block text-sm font-medium text-gray-700 dark:text-gray-200">harga:</label>
+                <input type="number" name="harga" id="harga" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray sm:text-sm" placeholder="harga barang" required>
             </div>
             <input type="submit" name="simpan" value="Simpan" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" style="background-color: #6A00CC; hover: background-color: #7A00DD;">
 
@@ -520,7 +524,9 @@ while ($row = $result_barang->fetch_assoc()) {
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">ID Barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Nama Barang</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Stock</th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Jenis Barang</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">unit</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">harga</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">totalharga</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 dark:text-gray-200 uppercase tracking-wider">Aksi</th>
             </tr>
 
@@ -530,11 +536,14 @@ while ($row = $result_barang->fetch_assoc()) {
               $result_barang->data_seek(0); // Query ulang untuk reset pointer
               if ($result_barang->num_rows > 0) {
                 while ($row = $result_barang->fetch_assoc()) {
+                  $total_harga = $row['stock'] * $row['harga'];
                     echo "<tr class='border-b border-gray-200 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-600 table-row-hover barang-row'>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['id_barang'] . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200 user-barang'>" . $row['nama_barang'] . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['stock'] . "</td>
-                            <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>" . $row['jenis'] . "</td>
+                            <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200 jenis_barang'>" . $row['jenis'] . "</td>
+                            <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-300 dark:text-gray-200'>Rp. " . $row['harga'] . "</td>
+                            <td class='px-6 py-4 whitespace-nowrap text-sm text-gray-3000 dark:text-gray-200'>Rp. " . $total_harga . "</td>
                             <td class='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                             <a href='barang_hapus.php?id=" . $row["id_barang"] . "' style='background-color: #c81e1e;' class='text-white px-3 py-1 rounded hover:bg-red-700'>Hapus</a>
                             </td>
@@ -549,16 +558,7 @@ while ($row = $result_barang->fetch_assoc()) {
         </table>
       </div>
         <!-- Pagination -->
-        <nav class="mt-8">
-          <ul class="pagination flex">
-            <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                <a class="page-link px-3 py-1 rounded mx-1 <?php if ($i == $page) echo 'bg-active'; else echo 'bg-inactive'; ?>" href="tambah_barang.php?page=<?= $i; ?>"><?= $i; ?></a>
-                </li>
-            <?php } ?>
-
-            </ul>
-          </nav>
+       
       </div>
     </main>
   </div>
@@ -567,9 +567,12 @@ while ($row = $result_barang->fetch_assoc()) {
           const cariBarang = this.value.toLowerCase();
           const resultBarang = document.getElementsByClassName("barang-row");
           const userBarang = document.getElementsByClassName("user-barang");
+          const jenisBarang = document.getElementsByClassName("jenis_barang");
+          
           for (i=0; i < userBarang.length; i++){
             const userCheck = userBarang[i].textContent;
-            if (userCheck.includes(cariBarang)){
+            const jenisCheck = jenisBarang[i].textContent;
+            if (userCheck.includes(cariBarang) || jenisCheck.includes(cariBarang)){
               resultBarang[i].classList.remove('hidden');
             } else{
               resultBarang[i].classList.add('hidden');

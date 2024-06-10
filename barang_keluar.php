@@ -1,9 +1,10 @@
 <?php
 include 'config.php';
 session_start();
+
 if (!isset ($_SESSION["auth"])){
-	header ("Location:pages/login.php");
-	exit;
+    header ("Location:pages/login.php");
+    exit;
 }
 
 // Proses input barang keluar
@@ -24,7 +25,7 @@ if (isset($_POST['submit'])) {
         mysqli_query($connect, $update_stock);
 
         // Menambahkan record ke tabel barang_keluar
-        $barang_keluar = "INSERT INTO barang_keluar (id_barang, jumlah_keluar, tanggal_keluar) VALUES ($id_barang, $jumlah_keluar, '$tanggal_keluar','$nama')";
+        $barang_keluar = "INSERT INTO barang_keluar (id_barang, jumlah_keluar, tanggal_keluar, nama) VALUES ($id_barang, $jumlah_keluar, '$tanggal_keluar', '$nama')";
         mysqli_query($connect, $barang_keluar);
 
         header("Location: barang_keluar.php");
@@ -38,12 +39,11 @@ if (isset($_POST['submit'])) {
 $query_barang = "SELECT * FROM barang WHERE stock > 0";
 $result_barang = mysqli_query($connect, $query_barang);
 
-
-$query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_keluar.jumlah_keluar, barang_keluar.tanggal_keluar, barang_keluar.nama
+$query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_keluar.jumlah_keluar, barang_keluar.tanggal_keluar, barang_keluar.nama, barang.harga
           FROM barang_keluar
           JOIN barang ON barang.id_barang = barang_keluar.id_barang";
 
-
+//...
 
 ?>
 
@@ -186,7 +186,7 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
                   type="text"
                   placeholder="Cari barang"
                   aria-label="Search"
-                  id="cariBarang" "tanggal-keluar"
+                  id="cariBarang"
                 />
               </div>
             </div>
@@ -289,20 +289,19 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
           <div class="container px-6 mx-auto grid">
 
     <h1 class="text-lg leading-3 font-medium text-gray-900 dark:text-gray-200">Daftar Barang Keluar</h1>
-      <?php if (isset($_SESSION['error'])) { ?>
-        <div class="<?php echo $darkTheme ? 'custom-alert-light' : 'custom-alert-dark'; ?>" role="alert">
-          <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
-        </div>
-      <?php } ?>
-
+        <?php if (isset($_SESSION['error'])) { ?>
+            <div class="<?php echo $darkTheme ? 'custom-alert-light' : 'custom-alert-dark'; ?>" role="alert">
+                <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
+            </div>
+        <?php } ?>
         <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
                     <form method="post" action="">
                         <label class="block text-sm">
                             <span class="text-gray-700 dark:text-gray-400">Barang</span>
                             <select name="id_barang" class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input">
-                                <?php while($data_barang = mysqli_fetch_array($result_barang)) { ?>
-                                    <option value="<?php echo $data_barang['id_barang']; ?>"><?php echo $data_barang['nama_barang']; ?></option>
-                                <?php } ?>
+                                <?php while($data_barang = mysqli_fetch_array($result_barang)) {?>
+                                    <option value="<?php echo $data_barang['id_barang'];?>"><?php echo $data_barang['nama_barang'];?></option>
+                                <?php }?>
                             </select>
                         </label>
 
@@ -314,7 +313,7 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
                         <input name="submit" type="submit" value="Tambah" class="mt-4 px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700" />
                     </form>
                 </div>
-                <div>
+                <div class="mx-auto max-w-md"><center>
                   <form method="post">
                     <div class="flex">
                       <div class="w-1/2 pr-2">
@@ -332,11 +331,23 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
                     </div>
                     <input type="submit" name="cari" class="mt-4 px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700" value="Cari">
                   </form>
-                </div>
-
+                </div></center>
+            <tr>
+                <td><div id="area">
+                  <center><br><h1 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300" >LAPORAN TRANSAKSI PEMESANAN</h1></center>
+                  <center >
+               <?php  
+               if(isset($_POST['cari'])){
+                $dari_tanggal = $_POST['dari_tanggal'];
+                $akhir_tanggal = $_POST['akhir_tanggal'];
+                 echo "Dari tanggal " . $dari_tanggal . " Sampai Tanggal " . $akhir_tanggal;
+               }
+               ?></center>
+                 <center>
                 <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
                     Data Barang Keluar
                 </h4>
+                </center>
                 <div class="w-full overflow-hidden rounded-lg shadow-xs">
                     <div class="w-full overflow-x-auto">
                         <table class="w-full whitespace-no-wrap">
@@ -346,7 +357,9 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
                                     <th class="px-4 py-3">Nama Barang</th>
                                     <th class="px-4 py-3">Jumlah Keluar</th>
                                     <th class="px-4 py-3">Tanggal Keluar</th>
-                                    <th class="px-4 py-3">memasukkan data</th>
+                                    <th class="px-4 py-3">Akses</th>
+                                    <th class="px-4 py-3">Harga</th>
+                                    <th class="px-4 py-3">Total Harga</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
@@ -357,7 +370,7 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
                                   $dari_tanggal = $_POST['dari_tanggal'];
                                   $akhir_tanggal = $_POST['akhir_tanggal'];
                               
-                                  $stmt = $connect->prepare("SELECT barang_keluar.id_keluar, barang.nama_barang, barang_keluar.jumlah_keluar, barang_keluar.tanggal_keluar, barang_keluar.nama
+                                  $stmt = $connect->prepare("SELECT barang_keluar.id_keluar, barang.nama_barang, barang_keluar.jumlah_keluar, barang_keluar.tanggal_keluar, barang_keluar.nama, barang.harga
                                   FROM barang_keluar
                                   JOIN barang ON barang.id_barang = barang_keluar.id_barang
                                   WHERE barang_keluar.tanggal_keluar BETWEEN? AND?");
@@ -366,7 +379,7 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
                                   $result_keluar = $stmt->get_result();
                               
                                 }else {
-                                  $result_keluar= mysqli_query($connect,"SELECT barang_keluar.id_keluar, barang.nama_barang, barang_keluar.jumlah_keluar, barang_keluar.tanggal_keluar, barang_keluar.nama
+                                  $result_keluar= mysqli_query($connect,"SELECT barang_keluar.id_keluar, barang.nama_barang, barang_keluar.jumlah_keluar, barang_keluar.tanggal_keluar, barang_keluar.nama, barang.harga
                                   FROM barang_keluar
                                   JOIN barang ON barang.id_barang = barang_keluar.id_barang");
                                 } 
@@ -377,19 +390,42 @@ $query_keluar = "SELECT barang_keluar.id_keluar, barang.nama_barang, barang_kelu
                                         <td class="px-4 py-3 text-sm"><?php echo $row['jumlah_keluar']; ?></td>
                                         <td class="px-4 py-3 text-sm tanggal-keluar"><?php echo $row['tanggal_keluar']; ?></td>
                                         <td class="px-4 py-3 text-sm"><?php echo $row['nama']; ?></td>
+                                        <td class="px-4 py-3 text-sm"><?php echo $row['harga']; ?></td>
+                                        <td class="px-4 py-3 text-sm"><?php echo $row['harga'] * $row['jumlah_keluar']; ?></td>
                                     </tr>
+                                    
                                 <?php } ?>
                                 
                             </tbody>
                         </table>
                         </div> 
                 </div>
-                     
+                </div></td>
+            </tr>
+              
+                <div class="row"><br>
+                <tr>
+                    <td ><button class="mt-4 px-4 py-2 text-white bg-purple-600 rounded-lg hover:bg-purple-700" onclick="return printArea('area')" >print</button></td>
+                </tr>
+           
+                  
+                    </div>
+
+                </div>
+                                    
             </div>
         </main>
     </div>
 </div>
 <script>
+        function printArea(area) {
+          var printContent = document.getElementById(area).innerHTML;
+          var originalContent = document.body.innerHTML;
+          document.body.innerHTML = printContent;
+          window.print();
+          document.body.innerHTML = originalContent;
+        }
+
         document.getElementById("cariBarang").addEventListener('input', function(){
           const cariBarang = this.value.toLowerCase();
           const resultBarang = document.getElementsByClassName("keluar-row");
