@@ -53,14 +53,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update'])) {
             <img
               aria-hidden="true"
               class="object-cover w-full h-full dark:hidden"
-              src="../assets/img/wafiq.jpg"
-              alt="wafiq"
+              src="../assets/img/editt.jpg"
+              alt="edit t"
             />
             <img
               aria-hidden="true"
               class="hidden object-cover w-full h-full dark:block"
-              src="../assets/img/waf.jpg"
-              alt="waf"
+              src="../assets/img/editm.jpeg"
+              alt="edit m"
             />
           </div>
             <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
